@@ -18,13 +18,18 @@ repositories pin.
 [opensoft/openXwallet](https://github.com/opensoft/openXwallet), where it was
 built, becomes the openxFactory adapter that pins it.
 
-**Status: pre-carve.** Content arrives at the carve from opensoft/openXwallet at
-`90111df262d6f54f7e82651d860adc12345f83f4`. openXwallet's
+**Status: carved** (2026-10-08, task 4.5 of openXwallet's
+`split-openwallet-neutral-core`). The content arrived from opensoft/openXwallet
+at `90111df262d6f54f7e82651d860adc12345f83f4`. openXwallet's
 `docs/openwallet-carve-manifest.yaml` declares every path that moves, byte for
 byte. The procedure, with a rollback written before every phase, is
 [`docs/openwallet-cutover-runbook.md`](docs/openwallet-cutover-runbook.md).
-Until the carve, this root holds the scaffold, that runbook, `.specify/` and
-the agent instructions, and both pins still name the legs' scaffold commits.
+This root holds the scaffold, that runbook, `.specify/`, the agent instructions
+and the ten carved `openwallet_root` rows. Both pins and both gitlinks name the
+legs' carve merge commits (`spec` at `15c15bbd451a803f0acdb24e5234836db829a2d3`,
+`code` at `72313daab1f229c049cb90998931564c1904dbbc`), and the manifest's eight
+owned rows point at `code/contracts/…`. The first `wallet-v*` tag is still to
+come, and cutting it is the operator's act.
 
 ### What each repository owns after the split
 

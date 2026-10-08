@@ -154,7 +154,7 @@ Requirements:
 - for the manifest checker, the packages `.github/workflows/carve-manifest.yml`
   installs, with the versions it pins.
 
-### The four helpers
+### The five helpers
 
 These go in `$WORK/bin`, which is outside every clone. Each is
 standard-library Python plus PyYAML, and each exits non-zero on any
@@ -204,6 +204,13 @@ PY
 # 3. the DECLARED-EDIT LAYER: every difference from the pure carve is declared
 #    usage: DEST MANIFEST CARVE_REF BASE_REF HEAD_REF [--may-change P]... [--added P]...
 #    run from inside the destination clone
+#    It reads changed lines from `git diff -U0` hunk headers, so its answer
+#    depends on how the diff aligns the two texts, and it pins
+#    --diff-algorithm=histogram rather than inherit git's default. Under the
+#    default, an undeclared blank line between two declared runs can be folded
+#    into one replaced hunk and refused, although a blank line still stands
+#    there. On the code leg the default refused lines 182, 255 and 2559 of the
+#    validator; histogram and helper 5 both accepted them.
 cat > "$WORK/bin/declared-edits.py" <<'PY'
 import re, subprocess, sys, yaml
 dest, manifest, carve, base, head = sys.argv[1:6]
@@ -240,7 +247,9 @@ for p, r in sorted(rows.items()):
     if t_head[p].split()[0] != t_carve[p].split()[0]:
         refusals.append(f"mode changed: {p}")
     undeclared = set()
-    for m in hunk.finditer(git("diff", "-U0", "--no-ext-diff", "--no-textconv", carve, head, "--", p)):
+    diff = git("diff", "-U0", "--diff-algorithm=histogram", "--no-ext-diff", "--no-textconv",
+               carve, head, "--", p)
+    for m in hunk.finditer(diff):
         start, count = int(m.group(1)), int(m.group(2) or 1)
         if count:                                   # old lines start..start+count-1 replaced or removed
             undeclared |= set(range(start, start + count)) - declared
@@ -281,14 +290,87 @@ for c in owned:
 print(f"control: {ok}/{len(owned)} owned digest(s) recomputed equal at {carve[:12]}")
 sys.exit(0 if ok == len(owned) == 8 else 1)
 PY
+
+# 5. the DECLARED LINES, with no diff algorithm: the authority when it and
+#    helper 3 disagree about a line (see "What a line is" below)
+#    usage: DEST MANIFEST CARVE_REF HEAD_REF
+#    run from inside the destination clone
+cat > "$WORK/bin/declared-lines-exact.py" <<'PY'
+"""Alignment-independent declared-line check (no diff algorithm involved).
+
+For every moved row of DEST, compare the carve-layer blob with HEAD's:
+- a verbatim row must be byte-identical;
+- a declared-edit row must read U0 X1 U1 X2 ... Un, where U0..Un are the
+  maximal runs of the carve blob's UNDECLARED lines, unchanged and in order,
+  and each Xi is whatever now stands where the i-th run of declared lines
+  stood (possibly nothing). A line is a \\n-terminated record of the blob.
+usage: DEST MANIFEST CARVE_REF HEAD_REF   (run inside the destination clone)
+"""
+import subprocess, sys, yaml
+from functools import lru_cache
+dest, manifest, carve, head = sys.argv[1:5]
+def blob(ref, path):
+    r = subprocess.run(["git", "show", f"{ref}:{path}"], capture_output=True)
+    return r.stdout if r.returncode == 0 else None
+doc = yaml.safe_load(open(manifest, encoding="utf-8"))
+bad = 0
+for row in doc["rows"]:
+    if row.get("destination") != dest:
+        continue
+    p = row["destination_path"]
+    old, new = blob(carve, p), blob(head, p)
+    declared = {n for e in row.get("edits") or [] for n in e["lines"]}
+    if not declared:
+        if old != new:
+            print(f"REFUSE verbatim row changed: {p}"); bad += 1
+        continue
+    o, n = old.split(b"\n"), new.split(b"\n")       # last element: after final \n
+    segs, cur, kind = [], [], None                   # [("U", lines) | ("D", count)]
+    for i, line in enumerate(o[:-1], start=1):
+        k = "D" if i in declared else "U"
+        if k != kind and cur:
+            segs.append((kind, cur)); cur = []
+        kind = k; cur.append(line)
+    segs.append((kind, cur))
+    tail_o, tail_n = o[-1], n[-1]
+    body = n[:-1]
+    @lru_cache(maxsize=None)
+    def fit(si, pos):
+        if si == len(segs):
+            return pos == len(body)
+        k, lines = segs[si]
+        if k == "U":
+            m = len(lines)
+            return body[pos:pos + m] == lines and fit(si + 1, pos + m)
+        return any(fit(si + 1, q) for q in range(pos, len(body) + 1))
+    sys.setrecursionlimit(100000)
+    ok = fit(0, 0) and tail_o == tail_n
+    runs = sum(1 for k, _ in segs if k == "D")
+    print(f"{'ok    ' if ok else 'REFUSE'} {p}: {len(declared)} declared line(s) in {runs} run(s); "
+          f"{sum(len(l) for k, l in segs if k == 'U')} undeclared line(s) preserved in order: {ok}")
+    bad += not ok
+print(f"{dest}: {bad} refusal(s)")
+sys.exit(2 if bad else 0)
+PY
 ```
 
 **What a line is.** The manifest's `edits[].lines` use the line numbers of the
 blob at the carve commit, as `git diff` and `grep -n` number them. Helper 3
-reads them from `git diff -U0` hunk headers, so it shares that numbering. A
-modified or removed line must be declared. A pure insertion must sit next to a
-declared line (hunk (e) adds its extension points exactly where hunks (c) and
-(d) remove code).
+reads them from `git diff -U0 --diff-algorithm=histogram` hunk headers, so it
+shares that numbering. A modified or removed line must be declared. A pure
+insertion must sit next to a declared line (hunk (e) adds its extension points
+exactly where hunks (c) and (d) remove code).
+
+**Helper 5 is the authority on a declared line.** Helper 3 judges a line by
+where a diff puts it, and two diff algorithms can place one edit differently.
+Helper 5 runs no diff. It cuts each carved blob into runs of declared and
+undeclared lines, and requires every undeclared run to stand in the new blob
+unchanged and in order, with anything, or nothing, where each declared run
+stood. Where helper 3 and helper 5 disagree about a line, helper 5's answer
+stands. It judges only the lines of carved rows: a mode change, a deleted path
+and a path outside the carve remain helper 3's. Helper 5 was added at
+realization, after the refusal described at helper 3, so the rehearsal record
+below predates it.
 
 ### One carve, per destination: the mirror and the filter
 
@@ -420,6 +502,7 @@ git merge --allow-unrelated-histories --no-edit \
 git diff --stat HEAD^2 HEAD -- $(cat "../paths-$DEST.txt")                      # EMPTY: the carved paths are the carve layer's
 git diff --stat HEAD^1 HEAD -- . $(sed 's/^/:!/' "../paths-$DEST.txt")          # EMPTY: nothing of the leg's own changed
 python3 ../bin/declared-edits.py "$DEST" "$MANIFEST" HEAD^2 HEAD^1 HEAD         # 0 refusals; 3 declaring edits left unapplied
+python3 ../bin/declared-lines-exact.py "$DEST" "$MANIFEST" HEAD^2 HEAD          # 0 refusal(s)
 ```
 
 Rehearsed against the code leg's birth branch: both `diff`s were empty. Helper 3
@@ -467,6 +550,8 @@ the same pull request. Line numbers are those of the carve-commit blob:
 python3 ../bin/declared-edits.py "$DEST" "$MANIFEST" HEAD~1^2 HEAD~1^1 HEAD \
     --added LICENSE --added <the corpus binding's path>
 # expect: 80 carved row(s); 3 edited on declared lines only; 0 declaring edits left unapplied; 0 refusal(s)
+python3 ../bin/declared-lines-exact.py "$DEST" "$MANIFEST" HEAD~1^2 HEAD
+# expect: openwallet_code: 0 refusal(s)
 ```
 
 A line in no declared hunk, or a path that is neither carved nor declared,
@@ -519,6 +604,8 @@ file name moves. The one declared addition is `LICENSE`.
 ```bash
 python3 ../bin/declared-edits.py openwallet_spec "$MANIFEST" HEAD~1^2 HEAD~1^1 HEAD --added LICENSE
 # expect: 38 carved row(s); 4 edited on declared lines only; 0 declaring edits left unapplied; 0 refusal(s)
+python3 ../bin/declared-lines-exact.py openwallet_spec "$MANIFEST" HEAD~1^2 HEAD
+# expect: openwallet_spec: 0 refusal(s)
 ```
 
 **2d. The gate.** The leg's `openspec-cli-pin` check runs on the pull request.
@@ -603,6 +690,8 @@ make validate                                    # names, manifest, lockstep pin
 python3 ../bin/declared-edits.py openwallet_root "$MANIFEST" HEAD^2 HEAD^1 HEAD \
     --may-change spec --may-change code --may-change contracts/spec-pin.yaml --may-change contracts/code-pin.yaml
 # expect: 10 carved row(s); 1 edited on declared lines only; 0 declaring edits left unapplied; 0 refusal(s)
+python3 ../bin/declared-lines-exact.py openwallet_root "$MANIFEST" HEAD^2 HEAD
+# expect: openwallet_root: 0 refusal(s)
 
 python3 - <<'PY'
 # part one (b), the THIRD way: the root manifest's owned rows equal the code leg's bytes

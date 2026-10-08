@@ -66,7 +66,9 @@ is loose markdown.
 
 The manifest is openXwallet's `docs/openwallet-carve-manifest.yaml`. It has one
 row per tracked path at the carve commit, 232 rows: 120 `moved_verbatim`, 8
-`moved_with_declared_edit` and 104 `not_moved`. **Within each leg, every carved
+`moved_with_declared_edit` and 104 `not_moved` *(as executed against the amended
+manifest at `64ca6eac`: 119 `moved_verbatim`, 9 `moved_with_declared_edit` and
+104 `not_moved`)*. **Within each leg, every carved
 path keeps its repository-relative path** (`destination_path` equals
 `source_path` on every moved row). That is what keeps each carve a pure copy and
 every digest whole. It is also why no `--path-rename` appears below.
@@ -76,6 +78,11 @@ every digest whole. It is also why no `--path-rename` appears below.
 | `openwallet_code` | `opensoft/openWallet-code` | 80 | 77 / 3 | 1 803 | validator hunks (a)-(e); the test split; the envelope-verify step |
 | `openwallet_spec` | `opensoft/openWallet-spec` | 38 | 34 / 4 | 14 | the subject lines: eleven, plus the travelling change's three occurrences |
 | `openwallet_root` | `opensoft/openWallet` (this repository) | 10 | 9 / 1 | 67 | the manifest field edits |
+
+*(The code leg's row is as authored. As executed against the amended manifest at
+`64ca6eac`, it is 76 / 4 with 1 811 declared edit lines, the fourth edited row
+being `tests/multi_key_wallets/test_declared_key_sets.py`; the manifest as a
+whole declares 1 892 edit lines on 9 rows.)*
 
 The code leg's 80 rows include 73 that go there under a **declared
 leg-classification override**. openRepoShape's classifier sends `contracts/**`
@@ -433,7 +440,7 @@ phase of this runbook.
 | --- | --- | --- |
 | 0.1 | The birth commits (tasks 3.4-3.6) have landed on each repository's `main` | `git log` in each. The root's leg pins still name the scaffold commits `72eca87cedbf79de110abfb903ecf3482ed2841d` (spec) and `9cabda85f8c59d317eee6287e4201946ced2b8a3` (code), and `make bootstrap` in a fresh recursive clone of the root is ok. For each leg it reports that `origin/main` is ahead of the pin, "which the pin deliberately does NOT follow". That is expected, and nothing moves the pins before Phase 3 |
 | 0.2 | openXwallet's `carve-manifest` check is green on its `main` | the check run. It recomputes every moved row's digest and fails if anything under the carve surface has changed since the carve commit |
-| 0.3 | The manifest verifies at the carve commit, from a fresh mirror | step (ii) above prints `OK … 232 row(s) at opensoft/openXwallet@90111df262d6 … 128 digest(s) recomputed; 1884 declared edit line(s) on 8 row(s); 232 tracked path(s) at the carve commit, each in exactly one row` |
+| 0.3 | The manifest verifies at the carve commit, from a fresh mirror | step (ii) above prints `OK … 232 row(s) at opensoft/openXwallet@90111df262d6 … 128 digest(s) recomputed; 1884 declared edit line(s) on 8 row(s); 232 tracked path(s) at the carve commit, each in exactly one row` *(as executed against the amended manifest at `64ca6eac`: the checker prints `1892 declared edit line(s) on 9 row(s)`)* |
 | 0.4 | `git filter-repo --version` answers | the rehearsal ran 2.47.0 (`a40bce548d2c`) |
 | 0.5 | The spec leg's `openspec-cli-pin` check has reported once (on its birth pull request) | the check run on the birth pull request |
 | 0.6 | No ruleset that applies to these repositories requires a linear history or forbids merge commits. An organisation ruleset may already cover them before Phase 5 creates theirs | read the rules in force on each `main`. Phases 1-3 land MERGE COMMITS (see "Landing"), and a rule forbidding them blocks the carve |
@@ -507,7 +514,9 @@ python3 ../bin/declared-lines-exact.py "$DEST" "$MANIFEST" HEAD^2 HEAD          
 
 Rehearsed against the code leg's birth branch: both `diff`s were empty. Helper 3
 reported `80 carved row(s); 0 edited on declared lines only; 3 declaring edits
-left unapplied; 0 refusal(s)`.
+left unapplied; 0 refusal(s)`. *(As executed against the amended manifest at
+`64ca6eac`, the code leg declares edits on 4 rows, so commit A leaves 4
+declaring edits unapplied, not 3, in the expected line above and here.)*
 
 **Commit A is RED by construction, and that is measured, not feared.** Run from
 the leg's own root at commit A, the rehearsal gave:
@@ -553,6 +562,11 @@ python3 ../bin/declared-edits.py "$DEST" "$MANIFEST" HEAD~1^2 HEAD~1^1 HEAD \
 python3 ../bin/declared-lines-exact.py "$DEST" "$MANIFEST" HEAD~1^2 HEAD
 # expect: openwallet_code: 0 refusal(s)
 ```
+
+*(As executed against the amended manifest at `64ca6eac`: 4 edited on declared
+lines only, not 3. The fourth row is
+`tests/multi_key_wallets/test_declared_key_sets.py` (:108-111, :117-118), and
+the test split also takes the pinned corpus note (:47-48) of the prune test.)*
 
 A line in no declared hunk, or a path that is neither carved nor declared,
 REFUSES. In the rehearsal, a one-line undeclared change and one stray file
@@ -749,7 +763,7 @@ fail, and each names the command above that produces it:
 | one (a) | the MAPPING is total and functional: every tracked path at the carve commit sits in exactly one row, every moved row's `destination_path` equals its `source_path`, and per destination the carve layer's sorted listing equals that destination's rows. Counts: 80 / 38 / 10, with both `examples/` prefixes preserved | `validate-carve-manifest.py` (step (ii)), then `bin/carve-layer.py` per destination |
 | one (b) | the eight digests THREE-WAY: the carve-commit manifest = the bytes at `contracts/…` in the code leg = this root's manifest rows at `code/contracts/…` | `bin/control.py`, `bin/carve-layer.py` (code), and the three-way check (3c) |
 | two (a) | per destination, git blob + mode identity 100% at the carve layer, recorded per path | `bin/carve-layer.py`, and helper 3's report at each commit A |
-| two (b) | the declared-edit layer: every changed line falls in its declared class, and every added path is a declared addition. A line or path in no class REFUSES | `bin/declared-edits.py` at 1c, 2c and 3c |
+| two (b) | the declared-edit layer: every changed line falls in its declared class, and every added path is a declared addition. A line or path in no class REFUSES | `bin/declared-edits.py` and `bin/declared-lines-exact.py` at 1c, 2c and 3c |
 | three | behaviour, run from the CODE leg's own root: openWallet standalone reports 21 / 42 / 11 of 11 and refuses a posture under no binding, and D5's neutrality gate is empty over the composed adapter | the code leg's validator and tests, from `code/`; the neutrality gate, from openXwallet (see below) |
 | four | every verifier observed REFUSING a mutated input before it is trusted. That includes a root whose `code` gitlink and `contracts/code-pin.yaml` disagree | the negatives recorded in this runbook, re-run for the proof: a mutated blob in a carve layer, an undeclared line, an undeclared file, a gitlink moved alone, and the spec leg's mutated tarball |
 | five | the shape's `validate` green at the root: names, manifest, lockstep pins | `make validate` at the landed root commit |

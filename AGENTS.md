@@ -85,17 +85,24 @@ line upstream:
 
 ## What this repository is
 
-**Status: pre-carve.** Content arrives at the carve from opensoft/openXwallet at
-`90111df262d6f54f7e82651d860adc12345f83f4`. The procedure, with a rollback
-written before every phase, is `docs/openwallet-cutover-runbook.md`. The carve
-is governed by openXwallet's `split-openwallet-neutral-core` (tracked in
-opensoft/openXwallet#25). Until the carve, this root holds:
+**Status: carved** (2026-10-08, task 4.5 of openXwallet's
+`split-openwallet-neutral-core`). The content arrived from opensoft/openXwallet
+at the carve commit `90111df262d6f54f7e82651d860adc12345f83f4`. The procedure,
+with a rollback written before every phase, is
+`docs/openwallet-cutover-runbook.md`. The carve is governed by openXwallet's
+`split-openwallet-neutral-core` (tracked in opensoft/openXwallet#25). This root
+holds:
 - the scaffold;
 - the runbook;
 - `.specify/`;
-- these instructions.
+- these instructions;
+- the ten carved `openwallet_root` rows.
 
-Both pins still name the legs' scaffold commits.
+Both pins and both gitlinks name the legs' carve merge commits: `spec` at
+`15c15bbd451a803f0acdb24e5234836db829a2d3` and `code` at
+`72313daab1f229c049cb90998931564c1904dbbc`. `contracts/manifest.yaml`'s eight
+owned rows point at `code/contracts/…`. The first `wallet-v*` tag is still to
+come, and cutting it is the operator's act.
 
 openWallet is the neutral wallet standard: two contract families, the packaged
 corpus, the conformance validator, the syntax gate and the promoted

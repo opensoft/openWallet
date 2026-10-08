@@ -1,0 +1,29 @@
+# openWallet code owners.
+#
+# The floor is narrow on purpose, as openXwallet's is: what decides WHICH commit
+# of each leg this project is, the checks that hold those to their pins, the
+# release identity that names both legs, and the workflows that decide whether
+# the checks run at all. A pull request that could change what runs cannot
+# clear itself.
+
+# The leg gitlinks. Each moves only with its pin, in one commit.
+/spec   @brettheap
+/code   @brettheap
+
+# Where each leg is fetched from.
+/.gitmodules   @brettheap
+
+# The manifest that says what this project IS.
+/project.yaml   @brettheap
+
+# The pins (spec, code, shape) and the naming policy. From the carve onward,
+# this also covers the release identity: contracts/manifest.yaml,
+# contracts/CHANGELOG.md and contracts/releases/.
+/contracts/   @brettheap
+
+# The shape's validators and bootstrap, copied from openRepoShape and
+# digest-pinned in contracts/shape-pin.yaml.
+/scripts/   @brettheap
+
+# Whether the checks run, in what order, and under which status-check token.
+/.github/workflows/   @brettheap

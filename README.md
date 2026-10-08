@@ -9,6 +9,55 @@ Scaffolded from [opensoft/openRepoShape](https://github.com/opensoft/openRepoSha
 at `7f84ca42ca86a8902928345109d2bf6bad87bd91`. Elected by Brett Heap on 2026-10-08, against
 `openxFactory docs/project-repo-schema.md`.
 
+## What openWallet is
+
+openWallet is the neutral wallet standard: two contract families, the packaged
+corpus, the conformance validator, the syntax gate and the promoted
+requirements, carrying no openxFactory input. It is a product that other
+repositories pin.
+[opensoft/openXwallet](https://github.com/opensoft/openXwallet), where it was
+built, becomes the openxFactory adapter that pins it.
+
+**Status: pre-carve.** Content arrives at the carve from opensoft/openXwallet at
+`90111df262d6f54f7e82651d860adc12345f83f4`. openXwallet's
+`docs/openwallet-carve-manifest.yaml` declares every path that moves, byte for
+byte. The procedure, with a rollback written before every phase, is
+[`docs/openwallet-cutover-runbook.md`](docs/openwallet-cutover-runbook.md).
+Until the carve, this root holds the scaffold, that runbook, `.specify/` and
+the agent instructions, and both pins still name the legs' scaffold commits.
+
+### What each repository owns after the split
+
+| repository | owns |
+|---|---|
+| `opensoft/openWallet` (this root) | `project.yaml`; the pins; the release identity (`contracts/manifest.yaml`, `contracts/CHANGELOG.md`, `contracts/releases/` and the `wallet-v*` tag); the proof; `LICENSE`; `.specify/` |
+| `opensoft/openWallet-spec` | the promoted `openxwallet` and `openxwallet-agent-profile` specs, their archives, the travelling change `add-composition-drift-cascade`, Speckit features 006, 010 and 015, and its own OpenSpec gate |
+| `opensoft/openWallet-code` | both contract families, the corpus, the validator, the syntax gate, their tests, and the `wallet-validation` and `pytest-suite` checks, which run from INSIDE the leg |
+
+The contracts sit in the code leg, beside the validator that reads them. That
+is a declared override of the shape's default, ruled by Brett Heap as Q7. See
+[`AGENTS.md`](AGENTS.md).
+
+### Pinning openWallet
+
+Consumers pin THIS ROOT by commit and digest, never a leg. They verify the code
+leg through the root's lockstep. Inside a consumer, a code-leg path `P` is
+`openWallet/code/P`, and its sha256 is the same at every depth. Domain
+descendants pin a version and carry a profile. They never fork.
+
+### Gates
+
+Every gate is offline.
+
+| repository | check |
+|---|---|
+| this root | `validate`: names, manifest and lockstep pins |
+| spec leg | `openspec-cli-pin`: strict OpenSpec validation through a CLI installed from a tarball committed in that leg |
+| code leg | `wallet-validation` and `pytest-suite` |
+
+A wallet validator run from this root prunes both legs and scans nothing. It is
+never a gate.
+
 ## Get started
 
 ```sh
@@ -157,8 +206,16 @@ scripts/validate-pins.py         THE LOCKSTEP VALIDATOR
 scripts/validate-repository-naming.py
 scripts/repo_shape.py            shared helpers, standard library only
 .github/workflows/validate.yml   the neutral gate, on pull_request
+.github/CODEOWNERS               review routing (this project's own)
 .gitattributes                   LF in every worktree, whatever core.autocrlf says
+.specify/                        Speckit: templates, scripts, the git extension
+                                 and its park/resume overlay (this project's own)
+docs/openwallet-cutover-runbook.md  the carve's procedure (this project's own)
 ```
+
+Arriving at the carve (see the runbook): `LICENSE`, `contracts/manifest.yaml`,
+`contracts/CHANGELOG.md`, `contracts/releases/` and
+`docs/byte-identity-wallet-v1.0.md`.
 
 Everything under `scripts/`, plus `contracts/repository-naming.yaml` and
 `AGENTS-shape.md`, is a COPY from `opensoft/openRepoShape`, digest-pinned in

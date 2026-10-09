@@ -98,11 +98,14 @@ holds:
 - these instructions;
 - the ten carved `openwallet_root` rows.
 
-Both pins and both gitlinks name the legs' carve merge commits: `spec` at
-`15c15bbd451a803f0acdb24e5234836db829a2d3` and `code` at
-`72313daab1f229c049cb90998931564c1904dbbc`. `contracts/manifest.yaml`'s eight
-owned rows point at `code/contracts/…`. The first `wallet-v*` tag is still to
-come, and cutting it is the operator's act.
+The first release, `wallet-v1.6`, is tagged on
+`b0af7c2ce53d63786a08a20aa3602a6f90345606` (opensoft/openWallet#7). At that
+commit both pins and both gitlinks name `spec` at
+`1924500354f472a6298c02db44a3ae2b21b8908e` (the archive merge of
+opensoft/openWallet-spec#4, after the spec leg's carve merge `15c15bbd`) and
+`code` at `72313daab1f229c049cb90998931564c1904dbbc` (the code leg's carve
+merge). `contracts/manifest.yaml`'s eight owned rows point at
+`code/contracts/…`.
 
 openWallet is the neutral wallet standard: two contract families, the packaged
 corpus, the conformance validator, the syntax gate and the promoted
@@ -119,8 +122,8 @@ After the split, this root owns:
 - **the release identity**: `contracts/manifest.yaml`, `contracts/CHANGELOG.md`
   and `contracts/releases/`, all carved from openXwallet, plus the annotated
   `wallet-v*` tag, which is cut here and on no leg;
-- **the proof**: `docs/byte-identity-wallet-v1.6.md`, for the first tag
-  (allocated, not yet cut), beside the carved lineage record
+- **the proof**: `docs/byte-identity-wallet-v1.6.md`, for the first tag,
+  `wallet-v1.6`, beside the carved lineage record
   `docs/byte-identity-wallet-v1.0.md`;
 - `LICENSE`, carved;
 - the cutover runbook and `.specify/`.

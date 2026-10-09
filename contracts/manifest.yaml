@@ -62,25 +62,25 @@ carved_from:
 #
 # Exclusion is by DECLARED FIELD, never by a `contracts/schemas/` path
 # heuristic -- that heuristic breaks the day openXwallet publishes a schema of
-# its OWN there. A row with no `member_class:` is OWNED (the eight below); the
-# one consumed member declares itself.
+# its OWN there. A row with no `member_class:` is OWNED (all eight below, and
+# none is consumed; a consumed member would declare itself).
 # ---------------------------------------------------------------------------
 
 contracts:
   # ---- openxWallet core + agent profile — contract-v1.31 registration (add-openxwallet, feature 006-openxwallet-contracts) ----
-  # The packaged corpus (contracts/openxwallet*/examples/, 16 valid + 33
-  # intended-invalid) and the strict validator (scripts/validate-openxwallet.py)
+  # The packaged corpus (code/contracts/openxwallet*/examples/, 21 valid + 42
+  # intended-invalid) and the strict validator (code/scripts/validate-openxwallet.py)
   # are content-addressed by commit; no per-file digest (the possibles-register
   # and ideation-routing precedent). Five digests below refreshed 2026-08-08
   # (docs-truth pass, pre-tag: description/comment corrections only — see
-  # specs/006-openxwallet-contracts/traceability.yaml `review_docs`).
+  # spec/specs/006-openxwallet-contracts/traceability.yaml `review_docs`).
   - id: openxwallet-record
     path: code/contracts/openxwallet/openxwallet-record.schema.yaml
     source_path: openWallet-code/contracts/openxwallet/openxwallet-record.schema.yaml
     type: schema
     # MIRRORS the file's own `contract_schema_version:`, which moved to 2 at
     # wallet-v1.3. The file's TOP-LEVEL `schema_version: 1` is a different
-    # field — the contract-schema-DOCUMENT meta version, shared by all nine
+    # field — the contract-schema-DOCUMENT meta version, shared by all eight
     # members of this bundle — and does NOT move. Three fields in one file are
     # called some spelling of "schema version"; this comment exists so the next
     # release does not have to guess which one a changelog meant.

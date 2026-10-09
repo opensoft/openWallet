@@ -720,8 +720,9 @@ for c in owned:
     ok += hashlib.sha256(blob).hexdigest() == c["sha256"]
 print(f"three-way: {ok}/{len(owned)} root-manifest digest(s) equal the code leg's bytes; consumed rows left: "
       f"{sum(1 for c in contracts if c.get('member_class') == 'consumed')}")
+raise SystemExit(0 if ok == len(owned) == 8 and not any(c.get("member_class") == "consumed" for c in contracts) else 1)
 PY
-# expect: three-way: 8/8 …; consumed rows left: 0
+# expect: three-way: 8/8 …; consumed rows left: 0, and exit 0; anything else exits 1
 ```
 
 **This is where the root's declared-edit layer is audited.** The commit is a

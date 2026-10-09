@@ -307,12 +307,30 @@ The blocks added with part three's second half were handled in two ways:
   (part two (b)), the adapter's setup, and trees (i) and (ii). The one varying
   value is openxFactory's `main` in (ii)'s first line: it had moved on to
   `de70915154f6`, with `governance/` still unchanged.
-- **Measured once, before being written into this text:** (iii)'s capture and
-  replay, the other invocations, 4.9 and depth 2. Each used the same command
-  this text prints. The quoted lines carry those measurements, in the form
-  these blocks print them, and the per-tree table holds the replay's results
-  tree for tree. Their re-run as extracted from this text is owed to a
-  follow-up commit.
+- **Measured once, before being written into this text, then re-run from
+  it:** (iii)'s capture and replay, the other invocations, 4.9 and depth 2.
+  Each used the same command this text prints. The quoted lines carry those
+  measurements, in the form these blocks print them, and the per-tree table
+  holds the replay's results tree for tree. The re-run from this text was
+  completed on 2026-10-09 (UTC, the runner finishing at about 01:40Z): the
+  blocks as printed here, in order, in a fresh scratch directory, with the
+  scratch path read as `$WORK`. The runner exited 0 (`runner exit=0`), and
+  every quoted line was printed again:
+  - (iii)'s capture: the same hook sha256, `ea9e3e3f…`; `91 passed` and
+    `33 passed, 1 skipped` under the hook; 96 and 31 validator invocations
+    recorded, and 82 + 28 built trees;
+  - the replay: 110 rows, identical to the per-tree table; 110 of 110 EMPTY,
+    plain and `--strict`; 52 at exit 0/0 and 58 at 1/1;
+  - the other invocations: the self-test alone EMPTY; `--help` differing by
+    design, outside the verdict; a path that does not exist EMPTY, with exit
+    2; Finding 4's three trees reproducing the same one-line differences,
+    with the exported copy EMPTY;
+  - 4.9, printing `DIFFERS` on the same `6c6` line;
+  - depth 2: `88/88` from this text's script and `88/88` three ways, and
+    openXwallet's pin 8/8, unchanged;
+  - the one output that varied: pytest's elapsed time, 272.31 s and 32.31 s
+    where this text quotes 421.89 s and 30.15 s. The quoted lines stay as
+    first measured.
 
 ---
 

@@ -1,14 +1,17 @@
 # Byte-identity proof — `wallet-v1.6`
 
-Status: record. Parts zero to five RUN-GREEN, except part three's second half
-(D5's neutrality gate over the composed adapter), which is PENDING group 5
+Status: record. Parts zero to five RUN-GREEN, part three's second half (D5's
+neutrality gate over the composed adapter) included; the consumer statement
+RUN-GREEN to depth 2, depth 3 PENDING group 6
 Kind: proof, a DECLARED PATH MAPPING
 Governing change: opensoft/openXwallet
 `openspec/changes/split-openwallet-neutral-core/`, `design.md` D7 "The proof —
 a DECLARED PATH MAPPING", and `tasks.md` 4.6. The procedure is this root's
 `docs/openwallet-cutover-runbook.md`, Phase 4.
 Tracked on: opensoft/openXwallet#25
-Run: 2026-10-09 (UTC), by lane `openXwallet-2`
+Run: 2026-10-09 (UTC), by lane `openXwallet-2`. Part three's second half, the
+consumer's depth 2 and the spec-pin snapshot were run the same day, against
+opensoft/openXwallet `a02c6c74`
 
 **The claim.** openWallet's first release on this root, `wallet-v1.6`, is a
 **declared path mapping** of opensoft/openXwallet at one named commit into three
@@ -34,18 +37,26 @@ precondition of a tag.
 choice, label verbatim: **"wallet-v1.6 (Recommended)"**. It continues
 openXwallet's `wallet-v1.0`…`wallet-v1.5` series (RULED Q4, "openWallet
 continues wallet-v* (Recommended)"). The number is ALLOCATED, and **the tag is
-NOT cut.** It is cut on this root only after two things (runbook Phase 6,
-task 4.9, an operator act):
-- this proof is green;
-- the three rulesets of Phase 5 (task 4.7) are ACTIVE.
+NOT cut.** It waits for three things (runbook Phase 6, task 4.9, an operator
+act):
+- this proof landing on this root's `main`;
+- the spec re-pin landing (part two (b): after the carve, the `spec` pin
+  follows the leg's `main` through declared changes);
+- the three rulesets of Phase 5 (task 4.7) ACTIVE.
 
-**The one part not yet run.** The same day, by multiple choice, label verbatim:
+It goes on this root's `main` after the first two, on the root commit that
+carries the completed proof. Brett Heap ruled that on 2026-10-09, label
+verbatim: **"The root commit carrying the completed proof (Recommended)"**.
+
+**The part run last.** On 2026-10-08, by multiple choice, label verbatim:
 **"Start now, neutrality half later (Recommended)"**. Part three's second half
 needs the composed adapter, which group 5 builds on lane `openXwallet-3`'s
-branch `rebuild/adapter-group-5` of opensoft/openXwallet. That branch is not yet
-runnable. The half is written below as PENDING, with the exact command that will
-fill it, and a follow-up commit to this file fills it. Every other part below
-was RUN, and its measured output is quoted.
+branch `rebuild/adapter-group-5` of opensoft/openXwallet. This document's first
+commit wrote that half as PENDING. A follow-up commit ran it on 2026-10-09
+against the branch's head, `a02c6c74`, and quotes the measured output. Every
+part below is now RUN. Two things stay open, each stated where it belongs:
+- depth 3 of the consumer statement, inside openxFactory (group 6);
+- part three's second half, re-confirmed at the commit group 5 lands.
 
 ## The NAMED CARVE COMMIT, and what was measured
 
@@ -75,6 +86,8 @@ time of the run carries the same manifest and the same checker.
 | root, carve layer | `3c44089c7d880ed2721067f97bbaf471d7b9387b` | the `openwallet_root` rows, 16 commits; the lockstep commit's second parent |
 | root, lockstep commit | `b48bcb20b31dece4d582444cf01f617a799d297d` | the root's carve layer and its manifest field edits, merged with both leg pins in ONE commit; first parent `2b8e2234`, the root `main` before |
 | root, measured | `1c68717f1ae4ae132d6942f8c7f533baf292d0b6` | opensoft/openWallet#2's merge; it pins spec `15c15bbd` and code `72313daa` |
+| openXwallet, the composed adapter | `a02c6c7487171c110490b234643a7e586ed47153` | the head of `rebuild/adapter-group-5` (lane `openXwallet-3`, group 5) at the run, on openXwallet `main` `206e0d4f`; it pins this root at `1c68717f` (part three, second half) |
+| spec leg, after the carve | `1506bbdb4194a779bef63d8c4e5eecc7eac0bd68`, then `1924500354f472a6298c02db44a3ae2b21b8908e` | opensoft/openWallet-spec#3's merge (the birth change `bind-approval-posture-vocabulary`), then #4's (its archive): declared post-carve changes that the root's `spec` pin follows (part two (b)) |
 
 The three carve layers that landed are the commits the runbook's filter-repo
 steps produced. Each leg's `A^2`, and the root's `b48bcb2^2`, equals the
@@ -279,14 +292,27 @@ bb54645f4761365332483a96601f5d6783a3ed2ae1ef3c06f77b500af32aaf79  mapping.py
 ```
 
 The run used git 2.43.0, Python 3.12.3, PyYAML 6.0.3, jsonschema 4.26.0,
-rfc3339-validator 0.1.4, pytest 9.1.1 and node v24.21.0. Nothing was re-carved,
-so `git filter-repo` did not run for this proof.
+rfc3339-validator 0.1.4, pytest 9.1.1 and node v24.21.0. Part three's second
+half used the same git, Python and packages. Nothing was re-carved, so `git
+filter-repo` did not run for this proof.
 
 **This document's own commands were then run again**, as extracted from its
-text, in order, in a fresh scratch directory. The one exception is the PENDING
-block of part three. Every output line quoted below was printed again, except
-two values that vary by nature from run to run: the short id of part four's
-scratch commit in 4.1, and pytest's elapsed time.
+text, in order, in a fresh scratch directory. Every output line quoted in
+parts zero to five was printed again, except values that vary by nature from
+run to run: the short id of part four's scratch commit in 4.1, and pytest's
+elapsed time.
+
+The blocks added with part three's second half were handled in two ways:
+- **Re-run as extracted, quoted lines printed again:** the spec-pin snapshot
+  (part two (b)), the adapter's setup, and trees (i) and (ii). The one varying
+  value is openxFactory's `main` in (ii)'s first line: it had moved on to
+  `de70915154f6`, with `governance/` still unchanged.
+- **Measured once, before being written into this text:** (iii)'s capture and
+  replay, the other invocations, 4.9 and depth 2. Each used the same command
+  this text prints. The quoted lines carry those measurements, in the form
+  these blocks print them, and the per-tree table holds the replay's results
+  tree for tree. Their re-run as extracted from this text is owed to a
+  follow-up commit.
 
 ---
 
@@ -846,6 +872,90 @@ and `in no declared edit: 0`. Those are the eleven requirement subjects
 occurrences. Under the ruling "keep the prefix", no capability id, `kind:`,
 finding code or file name moved.
 
+#### After the carve: the `spec` pin follows the leg's `main` through declared changes
+
+This is policy. Brett Heap ruled it twice on 2026-10-09, labels verbatim:
+- **"Re-pin spec to 1506bbdb before the tag (Recommended)"**: the spec leg's
+  4.8 merge, `1506bbdb4194a779bef63d8c4e5eecc7eac0bd68`
+  (opensoft/openWallet-spec#3). It adds the birth change
+  `bind-approval-posture-vocabulary`, status proposed.
+- **"Re-pin to the archive merge before the tag (Recommended)"**: that
+  change's archive, opensoft/openWallet-spec#4's merge.
+
+Each moves this root's `spec` gitlink and `contracts/spec-pin.yaml` in its own
+lockstep root commit, and the release record at tag time names the pinned
+commit. The carve's byte-identity claims are made at the carve layer and
+A → B, whose tree `15c15bbd` carries. A later spec commit is that, plus
+declared post-carve changes made through the leg's own OpenSpec instance. Those
+changes are outside the claims. The snapshot below records them as measured,
+not as judged:
+
+```bash
+cd "$WORK/root/spec" || exit 1
+git fetch -q origin main && git rev-parse origin/main
+git diff --stat 15c15bbd451a803f0acdb24e5234836db829a2d3 1506bbdb4194a779bef63d8c4e5eecc7eac0bd68
+git diff --stat -M 1506bbdb4194a779bef63d8c4e5eecc7eac0bd68 origin/main
+git diff --name-status -M 1506bbdb4194a779bef63d8c4e5eecc7eac0bd68 origin/main
+git diff --name-only 15c15bbd451a803f0acdb24e5234836db829a2d3 origin/main -- . ':!openspec/' | wc -l
+A=c788cba28a81b0dc17da4cea5db1e57eceb3a193
+for C in 1506bbdb4194a779bef63d8c4e5eecc7eac0bd68 origin/main; do      # the change's own new files declared as the additions
+  python3 ../../bin/declared-edits.py openwallet_spec "$MANIFEST" $A^2 $A^1 $C --added LICENSE \
+      $(git diff --name-only --diff-filter=A 15c15bbd451a803f0acdb24e5234836db829a2d3 $C | sed 's/^/--added /') | tail -n 2
+  python3 ../../bin/declared-lines-exact.py openwallet_spec "$MANIFEST" $A^2 $C | grep -E '^REFUSE|refusal'
+done
+```
+
+```
+1924500354f472a6298c02db44a3ae2b21b8908e
+ .../.openspec.yaml                                 |  44 +++++
+ .../bind-approval-posture-vocabulary/design.md     | 183 +++++++++++++++++++++
+ .../bind-approval-posture-vocabulary/proposal.md   | 134 +++++++++++++++
+ .../specs/openxwallet-agent-profile/spec.md        |  31 ++++
+ .../bind-approval-posture-vocabulary/tasks.md      |  89 ++++++++++
+ 5 files changed, 481 insertions(+)
+ .../.openspec.yaml                                 | 18 +++++++-
+ .../design.md                                      |  0
+ .../proposal.md                                    | 48 +++++++++++++++++-----
+ .../specs/openxwallet-agent-profile/spec.md        |  0
+ .../tasks.md                                       | 45 ++++++++++++++++++--
+ openspec/specs/openxwallet-agent-profile/spec.md   | 23 +++++++----
+ 6 files changed, 112 insertions(+), 22 deletions(-)
+R071	openspec/changes/bind-approval-posture-vocabulary/.openspec.yaml	openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/.openspec.yaml
+R100	openspec/changes/bind-approval-posture-vocabulary/design.md	openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/design.md
+R078	openspec/changes/bind-approval-posture-vocabulary/proposal.md	openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/proposal.md
+R100	openspec/changes/bind-approval-posture-vocabulary/specs/openxwallet-agent-profile/spec.md	openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/specs/openxwallet-agent-profile/spec.md
+R062	openspec/changes/bind-approval-posture-vocabulary/tasks.md	openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/tasks.md
+M	openspec/specs/openxwallet-agent-profile/spec.md
+0
+openwallet_spec: 38 carved row(s); 4 edited on declared lines only; 0 declaring edits left unapplied; 0 refusal(s)
+openwallet_spec: 0 refusal(s)
+REFUSE undeclared line(s) in openspec/specs/openxwallet-agent-profile/spec.md: [4, 5, 53, 54, 55, 56, 67, 68, 69]
+openwallet_spec: 38 carved row(s); 3 edited on declared lines only; 0 declaring edits left unapplied; 1 refusal(s)
+REFUSE openspec/specs/openxwallet-agent-profile/spec.md: 3 declared line(s) in 3 run(s); 66 undeclared line(s) preserved in order: False
+openwallet_spec: 1 refusal(s)
+```
+
+The spec leg's `main` had already reached the archive merge, `19245003`, when
+this was run. What the snapshot shows:
+- **At `1506bbdb`**, `15c15bbd` gains exactly the change's five new files
+  under `openspec/changes/bind-approval-posture-vocabulary/`, and nothing else.
+  Every carved row stands as commit B left it: helper 5 gives 0 refusals, and
+  helper 3 gives 0 once those five files are the declared additions.
+- **At the archive merge**, the change's directory is renamed under
+  `openspec/changes/archive/2026-10-09-bind-approval-posture-vocabulary/`.
+  Archiving also promotes the change's requirement text into the canonical
+  `openspec/specs/openxwallet-agent-profile/spec.md` (+16 −7), which is a
+  carved row. The carve's helpers refuse that row there, as they must: it is a
+  post-carve change, not a carve edit.
+- **Throughout**, nothing outside `openspec/` moved, and the code leg did not
+  move.
+
+At the run, this root's `main` was `5a444cf22c7d6bae307223010d4d2008b04e9c51`,
+opensoft/openWallet#4's merge, which pins `spec` at `1506bbdb`.
+opensoft/openWallet#5, which re-pins it at the archive merge `19245003`, was
+open. This document's branch still pins `15c15bbd`, the commit parts zero to
+five measured.
+
 ### The root: the lockstep commit, HEAD^2 → HEAD
 
 ```bash
@@ -1034,61 +1144,459 @@ runs, and never reds (`21 / 42 / 11 of 11` in each).
 `--strict`; the syntax gate 0; pytest 37 passed, 1 skipped; a posture under no
 binding refused.
 
-### Second half — D5's neutrality gate over the composed adapter: PENDING
+### Second half — D5's neutrality gate over the composed adapter: RUN
 
-**PENDING group 5**, under the ruling "Start now, neutrality half later
-(Recommended)". The composed adapter is task 5.2, built by lane `openXwallet-3`
-on its branch `rebuild/adapter-group-5` of opensoft/openXwallet. That branch is
-not yet runnable, and at this proof's run it did not exist on the remote. This
-section is filled by a follow-up commit to this file once it is runnable. That
-commit records the measured output here and moves this half's verdict.
+Run 2026-10-09 (UTC), by lane `openXwallet-2`, under the ruling "Start now,
+neutrality half later (Recommended)". The composed adapter is task 5.2, built by
+lane `openXwallet-3` on its branch `rebuild/adapter-group-5` of
+opensoft/openXwallet. The run measured that branch's head at the time,
+`a02c6c7487171c110490b234643a7e586ed47153`, which sits on openXwallet `main`
+`206e0d4f`. The branch can still move before its pull request opens. The commit
+that lands is confirmed by running this half's commands again at it, when that
+pull request lands.
 
-**The claim it will test** (D5; `tasks.md` 5.4) has three conditions. The
-carve-commit validator and the composed adapter run over the same tree must:
-- print byte-identical output;
+**The claim** (D5; `tasks.md` 5.4) has three conditions. The carve-commit
+validator and the composed adapter, run over the same tree, must:
+- print byte-identical output, stdout and stderr taken together;
 - exit with the same code;
 - do both plain and `--strict`.
 
 The trees are three kinds:
-- openXwallet's own tree;
-- an export of openxFactory's live `governance/` tree;
-- every fixture tree the kept and moved test suites build.
+- (i) openXwallet's own tree, at `a02c6c74`;
+- (ii) an export of openxFactory's live `governance/` tree;
+- (iii) every fixture tree the kept and moved test suites build.
 
-One output line is new by design and is declared rather than hidden. openXwallet's
-own run gains `nested repositories pruned (not adjudicated): openWallet`. The
-composed corpus note reads 21 / 45 / 13 of 13, against the standalone 21 / 42 /
-11 of 11 above.
-
-**The command that fills it.** Its shape was given by lane `openXwallet-3`. The
-fixture list and the export method are that lane's (task 5.4).
+**The adapter, and the two validators side by side.**
 
 ```bash
 cd "$WORK" || exit 1
 git clone -q https://github.com/opensoft/openXwallet.git oxw-adapter
-git -C oxw-adapter switch -q rebuild/adapter-group-5
-git -C oxw-adapter submodule update --init openWallet
-git -C oxw-adapter/openWallet submodule update --init code
+git -C oxw-adapter checkout -q a02c6c7487171c110490b234643a7e586ed47153     # rebuild/adapter-group-5's head at the run
+git -C oxw-adapter submodule update -q --init openWallet
+git -C oxw-adapter/openWallet submodule update -q --init code
 test "$(git -C oxw-adapter/openWallet rev-parse HEAD)" = 1c68717f1ae4ae132d6942f8c7f533baf292d0b6
 test "$(git -C oxw-adapter/openWallet/code rev-parse HEAD)" = 72313daab1f229c049cb90998931564c1904dbbc
+(cd oxw-adapter && python3 scripts/verify-openwallet-pin.py)
 git -C oxw-adapter worktree add -q --detach "$WORK/oxw-carve" "$CARVE_COMMIT"   # the carve-commit validator, in its own tree
-pip install pyyaml jsonschema rfc3339-validator
-neutral() {   # usage: neutral TREE [--strict]
-  ( cd "$WORK/oxw-carve"   && python3 scripts/validate-openxwallet.py "$@" ) > before.txt 2>&1; echo "exit=$?" >> before.txt
-  ( cd "$WORK/oxw-adapter" && python3 scripts/validate-openxwallet.py "$@" ) > after.txt  2>&1; echo "exit=$?" >> after.txt
-  diff before.txt after.txt && echo "EMPTY: $*"
+neutral() {   # usage: neutral TREE [--strict]; the composed side is $ADAPTER, by default $WORK/oxw-adapter
+  ( cd "$WORK/oxw-carve"               && python3 -B scripts/validate-openxwallet.py "$@" ) > before.txt 2>&1; echo "exit=$?" >> before.txt
+  ( cd "${ADAPTER:-$WORK/oxw-adapter}" && python3 -B scripts/validate-openxwallet.py "$@" ) > after.txt  2>&1; echo "exit=$?" >> after.txt
+  if diff before.txt after.txt > /dev/null; then echo "EMPTY $* ($(tail -n 1 after.txt))"; else echo "DIFFERS $*"; diff before.txt after.txt; fi
 }
-for TREE in "$WORK/oxw-adapter" "<the openxFactory governance export>" "<each test-suite fixture tree>"; do
-  neutral "$TREE"; neutral "$TREE" --strict
-done
-# expect: EMPTY for every tree and both modes, except openXwallet's own tree, whose
-# diff is exactly the one declared line `nested repositories pruned (not adjudicated): openWallet`
+mkdir -p "$WORK/gate"
 ```
 
-The adapter pins this root at `1c68717f`, an untagged commit. Its `code`
-gitlink is `72313daa`, the code-leg commit every part above measured. Where the
-tag goes is the operator's act (Phase 6). If the tagged root commit pins the same
-two leg commits, the bytes the gate exercises are the bytes this proof covers. A
-leg pin moved before the tag would need this proof re-run against the new pin.
+```
+OK openwallet-pin verified: openWallet@1c68717f1ae4ae132d6942f8c7f533baf292d0b6 (tag label <none yet>), gitlink read from HEAD, code leg @72313daab1f229c049cb90998931564c1904dbbc in lockstep (gitlink, contracts/code-pin.yaml, legs.code), 8 digest(s) recomputed, 6 path-only member(s) present
+```
+
+The adapter pins this root at `1c68717f`, the commit parts zero to five
+measured, and its code leg at `72313daa`. The rest of the setup works like
+this:
+- Each side's stdout and stderr go to one file, with the exit code appended,
+  so one `diff` judges all three conditions at once.
+- `python3 -B` keeps the composed run from leaving a bytecode cache behind.
+  The adapter path-loads the pinned core. Without `-B`, a git-ignored
+  `openWallet/code/scripts/__pycache__/` appeared inside tree (i).
+
+**(i) openXwallet's own tree and (ii) the openxFactory export.**
+
+```bash
+cd "$WORK/gate" || exit 1
+git clone -q --no-checkout https://github.com/opensoft/openxFactory.git "$WORK/oxf"
+git -C "$WORK/oxf" diff --quiet c8dde1315e3f4cfdbcc75872306493cb88c9cd2d origin/main -- governance && echo "governance/ unchanged to openxFactory main $(git -C "$WORK/oxf" rev-parse origin/main)"
+mkdir "$WORK/oxf-export" && git -C "$WORK/oxf" archive c8dde1315e3f4cfdbcc75872306493cb88c9cd2d governance | tar -x -C "$WORK/oxf-export"
+for TREE in "$WORK/oxw-adapter" "$WORK/oxf-export"; do
+  neutral "$TREE"; neutral "$TREE" --strict
+done
+grep -E '^(note  (corpus|repo scan)|validate-openxwallet:)' after.txt     # the export's summary lines, and nothing else of it
+rm -rf "$WORK/oxf" "$WORK/oxf-export"
+neutral "$WORK/oxw-adapter" > /dev/null; cat after.txt                     # tree (i) as both validators print it
+```
+
+```
+governance/ unchanged to openxFactory main 564f565ad092401c1bbd4be8a6d006c7f12bbda5
+EMPTY $WORK/oxw-adapter (exit=0)
+EMPTY $WORK/oxw-adapter --strict (exit=0)
+EMPTY $WORK/oxf-export (exit=0)
+EMPTY $WORK/oxf-export --strict (exit=0)
+note  corpus: 21 positive example(s), 45 negative confirmation(s) across 13/13 requirements
+note  repo scan: 9 openxWallet artifact(s) validated, 5 document(s) skipped as another kind
+validate-openxwallet: 0 error(s), 0 warning(s)
+note  approval-scope vocabulary read from contracts/schemas/hermes-job-envelope.schema.yaml: ['authority_agents_may_approve', 'hermes_approval_required_before_apply', 'human_escalation_required_for']
+note  wallet 'wal-agent-council-0011': 4 declared key(s) adjudicated (key-council-primary-0011, key-council-retired-0011, key-council-seat-a-0011, key-council-seat-b-0011)
+note  corpus: 21 positive example(s), 45 negative confirmation(s) across 13/13 requirements
+note  nested repositories pruned (not adjudicated): openWallet
+note  no intake register at this tree; nothing to read
+note  repo scan: 0 openxWallet artifact(s) validated, 21 document(s) skipped as another kind
+
+validate-openxwallet: 0 error(s), 0 warning(s)
+exit=0
+```
+
+Tree (i) prints those same nine lines plain and `--strict`, from both
+validators.
+
+The export is openxFactory's `governance/` at
+`c8dde1315e3f4cfdbcc75872306493cb88c9cd2d`. It is taken with `git archive` into
+a directory outside every clone and deleted once measured. It carries personal
+data (an operator's email and the seats' keys), so it is never committed
+anywhere, and this document quotes only the validators' summary lines. Its
+`governance/` is byte-unchanged from that commit to openxFactory's `main` at
+the run.
+
+**The line the first commit expected, and what was measured.** This document's
+first commit expected openXwallet's own tree to differ by one declared line,
+`nested repositories pruned (not adjudicated): openWallet`. It does not differ.
+Both validators print that line, because the carve-commit validator carries the
+same sweep prune (`wallet-v1.1`) and finds the same nested `openWallet/`. The
+line is new relative to the pre-split validator's run over the pre-split tree,
+as D5 declares, but it is no difference between the two validators. The same
+holds for the composed corpus note, 21 / 45 / 13 of 13: both validators print
+it.
+
+**(iii) Every fixture tree the suites build.** No suite keeps a fixture tree on
+disk. Each one builds its trees under pytest's `tmp_path` and hands them to
+`scripts/validate-openxwallet.py` as a subprocess. So a tree has to be caught at
+the moment it is handed over.
+
+A `sitecustomize.py` outside every clone does that. Python imports it at
+start-up in every process that has its directory on `PYTHONPATH`. It acts only
+in a process whose script is a `validate-openxwallet.py`, and there it copies
+each path argument before the validator runs. It prints nothing, and the suite
+sees the real validator's run.
+
+The suites are the ones that drive the validator. That means each test file
+under `tests/` that spells the literal `"validate-openxwallet.py"`, except the
+neutrality gate's own suite, which drives toy validators. This is lane
+`openXwallet-3`'s selection rule (task 5.4). It selects five kept files in
+openXwallet and two moved files in the code leg:
+
+```bash
+mkdir -p "$WORK/capture-site"
+cat > "$WORK/capture-site/sitecustomize.py" <<'PY'
+# Part three (iii): the capture hook. Python imports it at start-up in every process
+# that has this directory on PYTHONPATH. In a process whose script is a
+# validate-openxwallet.py, it records the invocation and COPIES each path argument
+# that exists, before the validator runs, so the tree a suite hands the validator
+# outlives the test. A path inside PROOF_LIVE_ROOTS is recorded, not copied: it is
+# compared in place. The hook prints nothing and changes nothing the suite sees.
+import json, os, shutil, sys, uuid
+def _capture(out):
+    live = [os.path.realpath(p) for p in os.environ.get("PROOF_LIVE_ROOTS", "").split(os.pathsep) if p]
+    rid = uuid.uuid4().hex[:12]
+    rec = {"id": rid, "test": os.environ.get("PYTEST_CURRENT_TEST", ""), "script": sys.argv[0],
+           "cwd": os.getcwd(), "args": sys.argv[1:], "trees": []}
+    for i, a in enumerate(sys.argv[1:]):
+        if a.startswith("-"):
+            continue
+        real = os.path.realpath(a)
+        t = {"arg": i, "path": real, "exists": os.path.exists(real)}
+        if t["exists"] and any(real == r or real.startswith(r + os.sep) for r in live):
+            t["live"] = True
+        elif t["exists"]:
+            dest = os.path.join(out, rid, str(i), os.path.basename(real))
+            if os.path.isdir(real):
+                shutil.copytree(real, dest, symlinks=True)
+            else:
+                os.makedirs(os.path.dirname(dest)); shutil.copy2(real, dest)
+            t["snapshot"] = dest
+        rec["trees"].append(t)
+    with open(os.path.join(out, "records.jsonl"), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec) + "\n")
+_out = os.environ.get("PROOF_CAPTURE")
+if _out and sys.argv and os.path.basename(sys.argv[0]) == "validate-openxwallet.py":
+    try:
+        _capture(_out)
+    except Exception as exc:  # recorded, never raised into the suite
+        with open(os.path.join(_out, "errors.txt"), "a", encoding="utf-8") as fh:
+            fh.write(f"{sys.argv!r}: {exc!r}\n")
+PY
+sha256sum "$WORK/capture-site/sitecustomize.py" | cut -c1-64
+cd "$WORK" || exit 1
+for S in oxw-adapter oxw-adapter/openWallet/code; do
+  N=$(basename "$S"); mkdir -p "$WORK/captured/$N"
+  ( cd "$WORK/$S" || exit 1
+    FILES=$(grep -lE "[\"']validate-openxwallet\.py[\"']" tests/*/*.py | grep -v '^tests/neutrality_gate/')
+    PYTHONPATH="$WORK/capture-site" PROOF_CAPTURE="$WORK/captured/$N" PROOF_LIVE_ROOTS="$WORK/oxw-adapter" \
+      PYTHONDONTWRITEBYTECODE=1 python3 -m pytest $FILES -q -p no:cacheprovider --basetemp="$WORK/pytest-$N" | tail -n 1
+    echo "$N: $(echo $FILES | wc -w) file(s), $(wc -l < "$WORK/captured/$N/records.jsonl") validator invocation(s) recorded" )
+done
+git -C oxw-adapter status --porcelain --ignored; git -C oxw-adapter/openWallet/code status --porcelain --ignored   # both print nothing
+python3 - "$WORK" <<'PY'
+# what the suites handed the validator: a tree they built (copied), the live checkout, no path, or a path that does not exist
+import collections, json, pathlib, sys
+work = sys.argv[1]
+for d in ("oxw-adapter", "code"):
+    kinds, live = collections.Counter(), set()
+    for line in open(pathlib.Path(work, "captured", d, "records.jsonl"), encoding="utf-8"):
+        r = json.loads(line)
+        if not r["trees"]:
+            kinds["--help" if "--help" in r["args"] else "no path (self-test only)"] += 1
+        for t in r["trees"]:
+            kinds["built tree, copied" if "snapshot" in t else "the live checkout" if t.get("live") else "no such path"] += 1
+            if t.get("live"):
+                live.add(t["path"].replace(work, "$WORK"))
+    print(d, dict(sorted(kinds.items())), sorted(live))
+PY
+```
+
+```
+ea9e3e3f853f95c5b7ac151b45fc87eb713eb0a414d6f08af396def5513605e9
+91 passed in 421.89s (0:07:01)
+oxw-adapter: 5 file(s), 96 validator invocation(s) recorded
+33 passed, 1 skipped in 30.15s
+code: 2 file(s), 31 validator invocation(s) recorded
+oxw-adapter {'--help': 1, 'built tree, copied': 82, 'no path (self-test only)': 5, 'no such path': 1, 'the live checkout': 7} ['$WORK/oxw-adapter']
+code {'--help': 1, 'built tree, copied': 28, 'the live checkout': 2} ['$WORK/oxw-adapter/openWallet/code']
+```
+
+Both suite runs pass under the hook. Lane `openXwallet-3`'s gate, running the
+same code-leg suite with `-rs`, names its one skip: the previous-validator
+comparison, which part three's first half explains. The hook wrote nothing
+into either checkout, and neither did the suites.
+
+**Each built tree, both validators, both modes.** The replay runs `neutral()`
+over every copy, in parallel, one scratch directory per tree:
+
+```bash
+cd "$WORK" || exit 1
+python3 - "$WORK/captured" > trees.tsv <<'PY'
+# one line per built tree, in invocation order: n, leg, suite, test, the copy
+import json, pathlib, sys
+n = 0
+for leg, d in (("openXwallet", "oxw-adapter"), ("code leg", "code")):
+    for line in open(pathlib.Path(sys.argv[1], d, "records.jsonl"), encoding="utf-8"):
+        r = json.loads(line)
+        for t in r["trees"]:
+            if "snapshot" in t:
+                n += 1
+                f, test = r["test"].rsplit(" ", 1)[0].split("::", 1)
+                print("\t".join((str(n), leg, f.split("/")[1], test, t["snapshot"])))
+PY
+replay() {   # one trees.tsv line -> one table row
+  IFS=$'\t' read -r n leg suite test tree <<< "$1"
+  cd "$(mktemp -d -p "$WORK/replay")" || exit 1
+  x() { echo "$(tail -n 1 before.txt | cut -d= -f2)/$(tail -n 1 after.txt | cut -d= -f2)"; }
+  p=$(neutral "$tree" | head -n 1 | cut -d' ' -f1); px=$(x)
+  s=$(neutral "$tree" --strict | head -n 1 | cut -d' ' -f1); sx=$(x)
+  printf '| %s | %s | `%s` | `%s` | %s | %s | %s | %s |\n' "$n" "$leg" "$suite" "$test" "$p" "$px" "$s" "$sx"
+}
+export WORK; export -f neutral replay
+mkdir -p replay && tr '\n' '\0' < trees.tsv | xargs -0 -P 8 -I{} bash -c 'replay "$1"' _ {} | sort -t'|' -k2,2n > rows.md
+wc -l < rows.md; cut -d'|' -f6-9 rows.md | sort | uniq -c
+```
+
+```
+110
+     52  EMPTY | 0/0 | EMPTY | 0/0 
+     58  EMPTY | 1/1 | EMPTY | 1/1 
+```
+
+**110 of 110 built trees: `diff` EMPTY, plain and `--strict`, and the same exit
+code each time.** That is 82 trees from the kept suites and 28 from the moved
+ones. 52 of them are clean (exit 0 from both validators in both modes). The
+other 58 are trees a suite builds to be refused, and both validators refuse
+them with exit 1 and byte-identical findings. The table is `rows.md` as printed.
+The exit columns read carve-commit validator / composed adapter.
+
+<details>
+<summary>(iii): the 110 built trees, per tree</summary>
+
+| # | leg | suite | test | plain | exit | `--strict` | exit |
+| ---: | --- | --- | --- | --- | --- | --- | --- |
+| 1 | openXwallet | `nested_repo_prune` | `test_the_composed_entrypoint_prunes_both_nested_shapes` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 2 | openXwallet | `nested_repo_prune` | `test_a_successful_register_read_says_so_exactly_once` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 3 | openXwallet | `nested_repo_prune` | `test_the_register_note_leaves_a_strict_run_green` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 4 | openXwallet | `nested_repo_prune` | `test_the_register_note_leaves_a_strict_run_green` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 5 | openXwallet | `nested_repo_prune` | `test_the_register_path_is_relative_to_the_scan_root` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 6 | openXwallet | `nested_repo_prune` | `test_no_register_keeps_the_ratified_absent_behaviour` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 7 | openXwallet | `nested_repo_prune` | `test_a_register_inside_a_nested_repo_is_not_read` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 8 | openXwallet | `nested_repo_prune` | `test_the_composed_adapter_adjudicates_as_the_pre_split_validator_did` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 9 | openXwallet | `nested_repo_prune` | `test_the_composed_adapter_adjudicates_as_the_pre_split_validator_did` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 10 | openXwallet | `openwallet_pin` | `test_an_uninitialized_root_refuses_with_its_own_remediation[validator]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 11 | openXwallet | `openwallet_pin` | `test_an_uninitialized_leg_refuses_with_its_own_remediation[validator]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 12 | openXwallet | `openwallet_pin` | `test_a_core_that_does_not_load_refuses[validator]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 13 | openXwallet | `openwallet_pin` | `test_a_core_file_that_is_absent_refuses[validator]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 14 | openXwallet | `openwallet_pin` | `test_a_core_without_the_composition_contract_refuses` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 15 | openXwallet | `openwallet_pin` | `test_a_requirement_id_the_core_already_declares_refuses` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 16 | openXwallet | `openwallet_pin` | `test_an_absent_envelope_is_the_hard_exit_it_always_was` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 17 | openXwallet | `per_seat_register_entries` | `test_the_four_real_seat_keys_validate` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 18 | openXwallet | `per_seat_register_entries` | `test_the_note_counts_adjudicated_keys_not_parsed_ones` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 19 | openXwallet | `per_seat_register_entries` | `test_an_absent_seat_surface_is_accepted_and_visible` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 20 | openXwallet | `per_seat_register_entries` | `test_a_strict_run_stays_green` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 21 | openXwallet | `per_seat_register_entries` | `test_a_strict_run_stays_green` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 22 | openXwallet | `per_seat_register_entries` | `test_an_unread_top_level_declaration_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 23 | openXwallet | `per_seat_register_entries` | `test_the_staleness_bound_is_required` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 24 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[P1Y]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 25 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[P1M]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 26 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[7 days]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 27 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[P]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 28 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[PT]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 29 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[P0D]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 30 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[PT0S]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 31 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 32 | openXwallet | `per_seat_register_entries` | `test_a_malformed_or_zero_bound_is_refused[P1DT]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 33 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[P7D]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 34 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[P1D]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 35 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[P1W]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 36 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[PT12H]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 37 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[P1DT6H30M]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 38 | openXwallet | `per_seat_register_entries` | `test_a_well_formed_bound_is_accepted[PT30S]` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 39 | openXwallet | `per_seat_register_entries` | `test_a_malformed_seat_surface_is_refused[shape0]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 40 | openXwallet | `per_seat_register_entries` | `test_a_malformed_seat_surface_is_refused[P7D]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 41 | openXwallet | `per_seat_register_entries` | `test_a_malformed_seat_surface_is_refused[shape2]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 42 | openXwallet | `per_seat_register_entries` | `test_a_malformed_seat_surface_is_refused[4]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 43 | openXwallet | `per_seat_register_entries` | `test_an_unknown_field_on_an_entry_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 44 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[authorizing_row]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 45 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[council_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 46 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[council_ref]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 47 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[key_fingerprint]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 48 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[key_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 49 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[public_key]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 50 | openXwallet | `per_seat_register_entries` | `test_a_missing_field_on_an_entry_is_refused[seat_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 51 | openXwallet | `per_seat_register_entries` | `test_a_private_seed_pasted_where_a_public_half_belongs_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 52 | openXwallet | `per_seat_register_entries` | `test_a_non_canonical_public_key_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 53 | openXwallet | `per_seat_register_entries` | `test_a_malformed_fingerprint_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 54 | openXwallet | `per_seat_register_entries` | `test_a_fingerprint_that_does_not_recompute_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 55 | openXwallet | `per_seat_register_entries` | `test_a_duplicate_entry_is_refused[seat_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 56 | openXwallet | `per_seat_register_entries` | `test_a_duplicate_entry_is_refused[key_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 57 | openXwallet | `per_seat_register_entries` | `test_a_duplicate_entry_is_refused[key_fingerprint]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 58 | openXwallet | `per_seat_register_entries` | `test_an_entry_naming_no_row_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 59 | openXwallet | `per_seat_register_entries` | `test_an_entry_on_an_expired_row_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 60 | openXwallet | `per_seat_register_entries` | `test_an_entry_naming_an_uncommissioned_body_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 61 | openXwallet | `per_seat_register_entries` | `test_two_spellings_naming_different_bodies_are_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 62 | openXwallet | `per_seat_register_entries` | `test_a_second_authority_row_is_not_refused_on_count` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 63 | openXwallet | `per_seat_register_entries` | `test_a_second_authority_row_is_not_refused_on_count` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 64 | openXwallet | `per_seat_register_entries` | `test_the_consumer_gate_conjunction_still_holds` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 65 | openXwallet | `register_reissuance` | `test_a_revoked_predecessor_beside_its_successor_is_clean` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 66 | openXwallet | `register_reissuance` | `test_a_strict_run_of_the_re_issuance_stays_green` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 67 | openXwallet | `register_reissuance` | `test_an_active_review_grant_with_no_row_still_refuses` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 68 | openXwallet | `register_reissuance` | `test_a_row_pointing_at_the_revoked_grant_is_still_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 69 | openXwallet | `register_reissuance` | `test_an_absent_register_with_only_a_revoked_grant_is_clean` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 70 | openXwallet | `register_reissuance` | `test_an_absent_register_with_an_active_review_grant_still_refuses` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 71 | openXwallet | `widen_register_reader` | `test_the_live_one_row_register_stays_clean` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 72 | openXwallet | `widen_register_reader` | `test_the_live_one_row_register_stays_clean` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 73 | openXwallet | `widen_register_reader` | `test_the_retired_row_count_refusal_is_emitted_by_nothing` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 74 | openXwallet | `widen_register_reader` | `test_the_retired_row_count_refusal_is_emitted_by_nothing` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 75 | openXwallet | `widen_register_reader` | `test_a_second_commissioned_body_resolving_end_to_end_is_admitted` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 76 | openXwallet | `widen_register_reader` | `test_a_per_council_duplicate_still_refuses_and_names_the_council` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 77 | openXwallet | `widen_register_reader` | `test_two_councils_may_seat_the_same_role_name` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 78 | openXwallet | `widen_register_reader` | `test_one_council_naming_a_seat_twice_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 79 | openXwallet | `widen_register_reader` | `test_key_id_and_fingerprint_stay_globally_unique[key_id]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 80 | openXwallet | `widen_register_reader` | `test_key_id_and_fingerprint_stay_globally_unique[key_fingerprint]` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 81 | openXwallet | `widen_register_reader` | `test_a_seat_entry_attached_to_another_bodys_row_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 82 | openXwallet | `widen_register_reader` | `test_a_second_row_that_does_not_resolve_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 83 | code leg | `multi_key_wallets` | `test_a_single_key_wallet_is_unchanged` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 84 | code leg | `multi_key_wallets` | `test_a_multi_key_wallet_validates_and_is_noted` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 85 | code leg | `multi_key_wallets` | `test_an_additional_key_may_present_the_grant` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 86 | code leg | `multi_key_wallets` | `test_a_weaker_key_is_admitted` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 87 | code leg | `multi_key_wallets` | `test_a_truthful_refusal_over_the_key_ceiling_is_valid` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 88 | code leg | `multi_key_wallets` | `test_retiring_one_key_leaves_the_others_working` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 89 | code leg | `multi_key_wallets` | `test_an_act_already_attributed_to_a_retired_key_stays_readable` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 90 | code leg | `multi_key_wallets` | `test_a_presenting_key_outside_the_declared_set_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 91 | code leg | `multi_key_wallets` | `test_a_duplicated_key_identifier_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 92 | code leg | `multi_key_wallets` | `test_a_duplicated_key_identifier_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 93 | code leg | `multi_key_wallets` | `test_a_key_may_not_outrank_its_wallet` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 94 | code leg | `multi_key_wallets` | `test_a_declared_key_custody_outside_the_closed_set_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 95 | code leg | `multi_key_wallets` | `test_a_fingerprint_that_does_not_recompute_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 96 | code leg | `multi_key_wallets` | `test_a_public_half_that_does_not_decode_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 97 | code leg | `multi_key_wallets` | `test_the_custody_in_force_is_the_presenting_keys` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 98 | code leg | `multi_key_wallets` | `test_the_single_key_basis_still_fires` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 99 | code leg | `multi_key_wallets` | `test_a_grant_above_the_presenting_keys_ceiling_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 100 | code leg | `multi_key_wallets` | `test_an_exercise_under_a_retired_key_is_refused` | EMPTY | 1/1 | EMPTY | 1/1 |
+| 101 | code leg | `multi_key_wallets` | `test_an_unverified_signature_does_not_establish_a_key` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 102 | code leg | `nested_repo_prune` | `test_nested_repo_with_a_dot_git_FILE_is_not_adjudicated` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 103 | code leg | `nested_repo_prune` | `test_nested_repo_with_a_dot_git_DIRECTORY_is_not_adjudicated` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 104 | code leg | `nested_repo_prune` | `test_the_control_same_record_outside_any_nested_repo_IS_adjudicated` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 105 | code leg | `nested_repo_prune` | `test_one_tree_both_cases_at_once` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 106 | code leg | `nested_repo_prune` | `test_the_scan_root_is_never_pruned_by_its_own_dot_git` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 107 | code leg | `nested_repo_prune` | `test_a_nested_repo_inside_a_pruned_one_is_not_reported_twice` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 108 | code leg | `nested_repo_prune` | `test_no_prune_note_when_there_is_nothing_to_prune` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 109 | code leg | `nested_repo_prune` | `test_skip_dir_names_still_behaves_as_it_did` | EMPTY | 0/0 | EMPTY | 0/0 |
+| 110 | code leg | `nested_repo_prune` | `test_the_packaged_corpus_exclusion_still_keys_on_path_parts` | EMPTY | 0/0 | EMPTY | 0/0 |
+
+</details>
+
+**What else the suites hand the validator.** Seventeen invocations hand it no
+built tree:
+
+```bash
+cd "$WORK/gate" || exit 1
+neutral; neutral --strict                         # no path: the self-test alone
+neutral --help | head -n 2                        # not a tree
+neutral "$WORK/no-such-tree"                      # a path that does not exist
+for TREE in "$WORK/oxw-adapter/openWallet/code" "$WORK/oxw-carve"; do neutral "$TREE"; neutral "$TREE" --strict; done
+mkdir "$WORK/code-copy" && git -C "$WORK/oxw-adapter/openWallet/code" archive HEAD | tar -x -C "$WORK/code-copy"
+neutral "$WORK/code-copy"; neutral "$WORK/code-copy" --strict
+```
+
+```
+EMPTY  (exit=0)
+EMPTY --strict (exit=0)
+DIFFERS --help
+75,79c75,79
+EMPTY $WORK/no-such-tree (exit=2)
+DIFFERS $WORK/oxw-adapter/openWallet/code
+5c5
+< note  repo scan: 1 openxWallet artifact(s) validated, 9 document(s) skipped as another kind
+---
+> note  repo scan: 0 openxWallet artifact(s) validated, 9 document(s) skipped as another kind
+DIFFERS $WORK/oxw-adapter/openWallet/code --strict
+5c5
+< note  repo scan: 1 openxWallet artifact(s) validated, 9 document(s) skipped as another kind
+---
+> note  repo scan: 0 openxWallet artifact(s) validated, 9 document(s) skipped as another kind
+DIFFERS $WORK/oxw-carve
+5c5
+< note  repo scan: 0 openxWallet artifact(s) validated, 32 document(s) skipped as another kind
+---
+> note  repo scan: 1 openxWallet artifact(s) validated, 32 document(s) skipped as another kind
+DIFFERS $WORK/oxw-carve --strict
+5c5
+< note  repo scan: 0 openxWallet artifact(s) validated, 32 document(s) skipped as another kind
+---
+> note  repo scan: 1 openxWallet artifact(s) validated, 32 document(s) skipped as another kind
+EMPTY $WORK/code-copy (exit=0)
+EMPTY $WORK/code-copy --strict (exit=0)
+```
+
+| Invocations | What they hand the validator | Measured |
+| ---: | --- | --- |
+| 5 (kept suites) | no path: the self-test alone | EMPTY, plain and `--strict`, exit 0 |
+| 7 (kept suites) | openXwallet's own checkout, in place | tree (i), above: EMPTY |
+| 1 (kept suites) | `some/tree`, a path that does not exist, inside a synthesized root | not a tree. The same kind of path given to both validators: EMPTY, exit 2 |
+| 2 (one in each) | `--help` | not a tree. 70 lines of the module docstring differ, because D3 splits the docstring between core and adapter. Outside the verdict, as lane `openXwallet-3`'s gate keeps it |
+| 2 (moved suites) | the code leg's own checkout, in place | **differs by one count line**, in both modes, with 0 errors and exit 0 on both sides. This tree is none of D5's three kinds. See Finding 4 |
+
+The last block's other trees are Finding 4's controls. Scanned in place, the
+carve-commit tree differs the other way round. The code leg's own bytes,
+exported elsewhere, are EMPTY.
+
+**Lane `openXwallet-3`'s own gate agrees.** That is `scripts/neutrality-gate.py`
+at `a02c6c74`, run with `--openxfactory-export` over the same export from a
+second fresh clone. It printed `neutrality-gate: IDENTICAL: 4 target run(s)
+over 2 tree(s) and 117 suite invocation(s) over 7 suite(s); every stdout
+byte-identical, every exit code equal` and exited 0. It judges stdout and the
+exit code, and it compares each suite invocation at the moment that invocation
+is made. This document's commands, above, are the authority. Finding 4 records
+what that gate's suite mirrors do not reach.
+
+**Part three, second half: RUN-GREEN** over D5's three kinds of tree, at
+opensoft/openXwallet `a02c6c74`:
+- (i) openXwallet's own tree, and (ii) the openxFactory `governance/` export:
+  EMPTY, plain and `--strict`, exit 0;
+- (iii) 110 of 110 trees the kept and moved suites build: EMPTY in both modes,
+  with equal exit codes;
+- the self-test alone: EMPTY.
+
+`neutral()` itself was observed refusing a one-byte change (part four, 4.9).
+
+The adapter pins this root at `1c68717f`, and its `code` gitlink is `72313daa`,
+the code-leg commit every part above measured. The gate reads only
+`openWallet/code`, so the spec re-pins of part two (b) move no byte it reads.
+If the code pin moves before the tag, this half runs again against the new
+pin, and so do parts zero to five.
 
 ---
 
@@ -1137,11 +1645,14 @@ scratch clone was discarded afterwards.
 | 4.8 | the code leg's `validate-openxwallet.py` | the corpus binding with `authority_agents_may_approve` removed | five `ERROR [authority-vocabulary-parallel]` on the five posture-carrying positives; `validate-openxwallet: 5 error(s), 0 warning(s)` | 1 |
 | 4.8 | the same | part three (i): a live posture under no binding | three `ERROR [authority-vocabulary-parallel] … (legal terms: [])` | 1 |
 | 4.8 | the code leg's `wallet-yaml-syntax-gate.py` | a tab-indented line appended to the grant schema | `ERROR contracts/openxwallet/openxwallet-grant.schema.yaml: while scanning for the next token` | 1 |
+| 4.9 | part three's `neutral()` | in a scratch copy of the adapter, its pinned core with one byte appended to the `repo scan:` note; over tree (i) | `DIFFERS $WORK/oxw-adapter`, `6c6`, `> note  repo scan: 0 openxWallet artifact(s) validated, 21 document(s) skipped as another kind.` | prints `DIFFERS` |
 
 The commit in 4.1 is a scratch commit, so the short id that `control.py` prints
 for it varies from run to run. The 4.4 mutations sit on commit B
 (`75b990dc`) and are judged against A's parents, exactly as part two (b) judges
 B. The 4.5 and 4.6 mutations sit on `1c68717f` in a scratch clone of this root.
+The 4.9 mutation sits in `$WORK/neg-adapter`, a scratch copy of the adapter
+checkout, which is discarded afterwards. It ran with part three's second half.
 
 **The commands**, in the order of the table:
 
@@ -1246,6 +1757,25 @@ python3 scripts/wallet-yaml-syntax-gate.py .
 git checkout -q -- contracts/
 ```
 
+4.9 needs part three's setup and its `neutral()`:
+
+```bash
+# 4.9 part three's neutral(), against a scratch copy of the adapter whose pinned core prints one byte more
+cd "$WORK/gate" || exit 1
+cp -a "$WORK/oxw-adapter" "$WORK/neg-adapter"
+sed -i 's/document(s) skipped as another kind")/document(s) skipped as another kind.")/' "$WORK/neg-adapter/openWallet/code/scripts/validate-openxwallet.py"
+ADAPTER="$WORK/neg-adapter" neutral "$WORK/oxw-adapter"
+rm -rf "$WORK/neg-adapter"
+```
+
+```
+DIFFERS $WORK/oxw-adapter
+6c6
+< note  repo scan: 0 openxWallet artifact(s) validated, 21 document(s) skipped as another kind
+---
+> note  repo scan: 0 openxWallet artifact(s) validated, 21 document(s) skipped as another kind.
+```
+
 Before its tarball was mutated, the spec leg's gate ran green in the same
 scratch clone: `Totals: 3 passed, 0 failed (3 items)` and `OK openspec-cli-pin:
 @fission-ai/openspec@1.12.0 verified against its content address and every
@@ -1254,7 +1784,9 @@ remediation ("never edit an integrity value to make this pass").
 
 **Part four: RUN-GREEN.** Every verifier the other parts rely on was observed
 refusing a mutated input in this run. That includes a root whose `code` gitlink
-and `contracts/code-pin.yaml` disagree, in both directions. There is one
+and `contracts/code-pin.yaml` disagree, in both directions. It also includes
+part three's `neutral()`, which reported a one-byte change in the composed
+side's output. There is one
 qualification, recorded under "Findings": the runbook's printed 3c three-way
 check refuses by its count and not by its exit code. This proof's
 `three-way-full.py` refuses by both.
@@ -1285,9 +1817,12 @@ pins ok
 exit=0
 ```
 
-That run is at `1c68717f`. At this branch's head, which adds only this document and two documentation edits, `make validate` prints the same lines, ending `pins ok`, exit 0.
+That run is at `1c68717f`. This document's branch changes documentation only:
+this document, `README.md`, `AGENTS.md` and the runbook's 3c snippet. At its
+head, `make validate` prints the same lines, ending `pins ok`, exit 0.
 
-**Part five: RUN-GREEN.** Names, manifest and lockstep pins all pass. Both pins
+**Part five: RUN-GREEN.** Names, manifest and lockstep pins all pass. At the
+measured commit, both pins
 are `spec` `15c15bbd451a803f0acdb24e5234836db829a2d3` (`tree_sha256`
 `112391978d5ad4a0bb254f5171d03369372929a042ed2b70f7afb4d431693025`) and `code`
 `72313daab1f229c049cb90998931564c1904dbbc` (`tree_sha256`
@@ -1307,7 +1842,7 @@ A consumer sees one prefix and nothing else:
 | --- | --- | --- |
 | 0 | the code leg, `opensoft/openWallet-code` at `72313daa` | the referent |
 | 1 | this root, `code/P` | **88/88** paths of the code leg at `72313daa` have the same sha256 at `code/P` in this root's checkout (run below) |
-| 2 | openXwallet, `openWallet/code/P` | **PENDING group 5**: the adapter rebuild mounts this root (task 5.1) |
+| 2 | openXwallet, `openWallet/code/P` | **88/88** paths have the same sha256 at `openWallet/code/P` in openXwallet at `a02c6c74`, where the adapter rebuild mounts this root (task 5.1), and at `code/P` in this root (run below). openXwallet's pin `files:` hold part one (b)'s eight strings |
 | 3 | openxFactory, `openXwallet/openWallet/code/P` | **PENDING group 6**: openxFactory's re-path and bump (`tasks.md` group 6) |
 
 ```bash
@@ -1335,6 +1870,63 @@ depth 1 are part one (b)'s. At depths 2 and 3 they must equal the same eight
 strings, and openXwallet's pin `files:` and openxFactory's re-pathed `files:`
 are to hold them (D6).
 
+**Depth 2**, in openXwallet at `a02c6c74` (part three's `oxw-adapter`). The
+block above, run from that checkout's root with `PREFIX=openWallet/code/`,
+prints:
+
+```
+88/88 path(s) P of the code leg at 72313daab1f2 have the same sha256 at openWallet/code/P
+```
+
+The same 88 paths, three ways, and the eight strings in openXwallet's pin:
+
+```bash
+cd "$WORK" || exit 1
+python3 - root oxw-adapter <<'PY'
+# depth 2, three ways: the code leg's P at 72313daa = this root's code/P = openXwallet's openWallet/code/P
+import hashlib, subprocess, sys
+root, consumer = sys.argv[1:3]
+C = "72313daab1f229c049cb90998931564c1904dbbc"
+h = lambda b: hashlib.sha256(b).hexdigest()
+ps = [p for p in subprocess.run(["git", "-C", f"{root}/code", "ls-tree", "-r", "-z", "--name-only", C],
+      check=True, capture_output=True).stdout.decode().split("\0") if p]
+same = sum(h(subprocess.run(["git", "-C", f"{root}/code", "show", f"{C}:{p}"], check=True, capture_output=True).stdout)
+           == h(open(f"{root}/code/{p}", "rb").read()) == h(open(f"{consumer}/openWallet/code/{p}", "rb").read())
+           for p in ps)
+print(f"{same}/{len(ps)} path(s) P: the code leg's P at {C[:12]} = this root's code/P = openXwallet's openWallet/code/P")
+sys.exit(0 if same == len(ps) else 1)
+PY
+cd "$WORK/oxw-adapter" || exit 1
+python3 - <<'PY'
+# openXwallet's pin of this root: its files: recomputed, and their eight sha256s
+import hashlib, yaml
+pin = yaml.safe_load(open("contracts/openwallet-pin.yaml", encoding="utf-8"))
+rows = pin["files"]
+ok = sum(r["sha256"] == hashlib.sha256(open(f"{pin['submodule_path']}/{r['path']}", "rb").read()).hexdigest() for r in rows)
+print(f"contracts/openwallet-pin.yaml: commit {pin['commit'][:12]}, legs.code {pin['legs']['code']['commit'][:12]}; "
+      f"{ok}/{len(rows)} files: recomputed equal at {pin['submodule_path']}/<path>")
+for r in rows:
+    print(r["sha256"], r["path"])
+PY
+```
+
+```
+88/88 path(s) P: the code leg's P at 72313daab1f2 = this root's code/P = openXwallet's openWallet/code/P
+contracts/openwallet-pin.yaml: commit 1c68717f1ae4, legs.code 72313daab1f2; 8/8 files: recomputed equal at openWallet/<path>
+20ba39c07564c93b8ffe47382126677a165771244d28fb0c4976ab950173c40a code/contracts/openxwallet/openxwallet-record.schema.yaml
+df72638497a7f90c2a4dff47c429cb794bc4b6e270ce2dd2b17116478ae3b51a code/contracts/openxwallet/openxwallet-custody-registry.schema.yaml
+94d631d6ee76dab015628a1856afd82582b98d6a3733622c9afe8b13b5278539 code/contracts/openxwallet/openxwallet-custody.registry.yaml
+fde433c5821e2e6f62926a72c58a67a784961d2e9e27e9f2b3520fcc8e738e88 code/contracts/openxwallet/openxwallet-grant.schema.yaml
+f16ad31246186cec36e142ae39bd831d98fbc5c0afd48685057bc39e113c8858 code/contracts/openxwallet/openxwallet-grant-exercise.schema.yaml
+c2a6d2fd23fb3743fdaf0e165dabc4cb1dff24e52a8262a38c86ed1482374b25 code/contracts/openxwallet/openxwallet-distinct-holder-constraint.schema.yaml
+d29eca519462aff7871de3786f19c820e9fc3b95115ce30e57d1f1cc2bc0c0b2 code/contracts/openxwallet/openxwallet-subject-attestation.schema.yaml
+aed3978e8ae952f3ff5b3de1f672bba5da350d5aaeb442feafaa870b4de4be91 code/contracts/openxwallet-agent-profile/openxwallet-agent-composition.schema.yaml
+```
+
+The eight `sha256` values are part one (b)'s eight, row for row, and each
+`path` is `code/contracts/…` under the mount `openWallet/`. **Depth 2:
+RUN-GREEN.** Depth 3 waits for openxFactory's re-path and bump (group 6).
+
 ---
 
 ## Findings, recorded rather than absorbed
@@ -1346,8 +1938,10 @@ N/8 …` and has no `sys.exit`. Fed a root manifest with one digest changed
 alone would take that run as green. This proof does not rely on it:
 `three-way-full.py` exits 1 on anything but 8/8 with no consumed row, and helper
 3 refuses the same mutation as an undeclared manifest line (`[136]`). The
-runbook is not edited here. Its fix is one line, `sys.exit(0 if ok == len(owned)
-== 8 and consumed == 0 else 1)`, and it is owed to a separate change.
+fix gives the snippet an exit code: it exits 1 unless 8/8 agree and no consumed
+row is left. It is a separate runbook commit in this document's pull request,
+which touches nothing else in the runbook. Part four's 4.6 row records the
+snippet as it stood at `1c68717f`, which is what this proof ran.
 
 **2. Rule (g)'s message still names "the neutral job envelope".** D4 says rule
 (g)'s message "stops naming 'the neutral job envelope' and names the bound
@@ -1375,17 +1969,73 @@ less 3; 41 + 4 negatives less 3" was measured at `b7c6e0b`, before the carve
 commit was named. At `90111df` the counts are 68, 8, 41 and 4, unchanged. 73
 contract rows and 42 negatives reach the code leg (part one (a)).
 
+**4. Byte-identity holds for a tree, not for where a validator stands.**
+`repo_scan` skips the canonical custody registry by resolved path:
+`path.resolve() == CUSTODY_REGISTRY_PATH.resolve()` (the carve-commit
+validator's :3442, the pinned core's :1933). `CUSTODY_REGISTRY_PATH` hangs off
+each validator's own `ROOT`:
+- the composed adapter's core has `ROOT` `openWallet/code`;
+- the carve-commit validator, in its own tree, has `ROOT` `$WORK/oxw-carve`.
+
+So over a tree that holds one of the two validators' OWN registry, at its own
+path, they disagree on one count, and only there (part three, second half):
+
+| Tree | Carve-commit validator | Composed adapter |
+| --- | --- | --- |
+| the code leg's checkout, scanned in place | `repo scan: 1 openxWallet artifact(s) validated, 9 document(s) skipped …` | `repo scan: 0 …, 9 …` |
+| the carve-commit tree, scanned in place | `repo scan: 0 …, 32 …` | `repo scan: 1 …, 32 …` |
+| the code leg's bytes at `72313daa`, exported elsewhere | `1 …, 9 …` | `1 …, 9 …`: EMPTY |
+
+Both sides report 0 errors and 0 warnings and exit 0, in both modes. The
+difference follows each validator's location, both ways round, and disappears
+when the same bytes sit anywhere else. It is not something the composition
+does.
+
+Two moved tests scan the code leg's checkout in place:
+`test_the_repository_itself_still_reports_its_own_corpus` and
+`test_this_repository_adjudicates_with_no_error_and_no_warning`. That tree is
+none of D5's three kinds. It is not openXwallet's tree, not the export, and not
+a tree a suite builds. Inside openXwallet's own tree, the composed core's
+registry sits under `openWallet/`, which the sweep prunes whole. No consumer's
+sweep reaches the code leg in place: openXwallet's prunes `openWallet/`, and
+openxFactory's prunes `openXwallet/`.
+
+D5's sentence "on any tree, the composed run's output is byte-identical to the
+pre-split validator's" is therefore true of every tree that holds neither
+validator's own packaged registry, and of nothing wider.
+
+Lane `openXwallet-3`'s gate does not see this. It runs each suite in a mirror
+whose top-level entries are symbolic links, and `os.walk` does not descend a
+linked directory. So its scan of a mirrored leg root reads no `contracts/`:
+built that way, a mirror of the code leg scans `0 openxWallet artifact(s)
+validated, 0 document(s) skipped`, where the leg itself has 9.
+
+Closing the gap is a choice for Brett Heap:
+- a qualification of D5's sentence, declared;
+- or a change to the skip. That would move the code leg's bytes and so its
+  pin, and this proof would run again.
+
+This document does neither. Part three's verdict covers D5's three kinds of
+tree.
+
 ## What this proof does not cover
 
-- **Part three's second half and depths 2 and 3 of the consumer statement**,
-  PENDING groups 5 and 6 (above).
+- **Depth 3 of the consumer statement**, PENDING group 6 (above).
+- **The composed adapter's landing commit.** Part three's second half measured
+  `rebuild/adapter-group-5` at `a02c6c74`. The commit group 5 lands is
+  confirmed by running that half's commands again at it.
+- **The spec leg after the carve** (part two (b)). Its declared post-carve
+  changes are measured there as a snapshot. They are outside the byte-identity
+  claims, which are made at the carve layer and A → B.
 - **The release commit.** Task 4.9 realizes the five coordinated values of
   `wallet-v1.6` on this root: `contract_bundle_version`, the
   `contracts/CHANGELOG.md` entry, `contracts/releases/wallet-v1.6.digests.yaml`
-  and the tag. That commit comes after this proof. If it moves no byte of
-  either leg, the eight per-file digests it records must be the eight strings
-  of part one (b). If it moves a leg's bytes, it moves that leg's pin, and this
-  proof must be re-run against the new pin before the tag.
+  and the tag. That commit comes after this proof. If it moves no byte of the
+  code leg, the eight per-file digests it records must be the eight strings of
+  part one (b). If it moves the code leg's bytes, it moves that leg's pin, and
+  this proof must be re-run against the new pin before the tag. The `spec` pin
+  moves only as part two (b) states, and the release record names the commit it
+  pins.
 - **The rulesets** (task 4.7), an org-admin act.
 
 ## Verdict
@@ -1396,19 +2046,29 @@ contract rows and 42 negatives reach the code leg (part one (a)).
 | one (a) | the mapping is total and functional; per destination, the carve layer equals its rows | **RUN-GREEN** (232 paths in 232 rows, each exactly once; 128 moved, 0 renamed; 80 / 38 / 10; both `examples/` prefixes; 73 contract rows, 42 negatives) |
 | one (b) | the eight digests three-way | **RUN-GREEN** (8/8: carve-commit manifest = code-leg carve layer = pinned code leg = this root's `code/contracts/…` rows; 0 consumed rows) |
 | two (a) | git blob + mode identity 100% at the carve layer, per path | **RUN-GREEN** (80/80, 38/38, 10/10; each commit A is the pure carve) |
-| two (b) | every change after the carve layer is declared | **RUN-GREEN** (helpers 3 and 5: 0 refusals at each B, each pinned leg commit, the lockstep commit and `1c68717f`; 0 changed lines outside a declared edit; additions: the corpus binding and `LICENSE`) |
+| two (b) | every change after the carve layer is declared | **RUN-GREEN** (helpers 3 and 5: 0 refusals at each B, each pinned leg commit, the lockstep commit and `1c68717f`; 0 changed lines outside a declared edit; additions: the corpus binding and `LICENSE`. After the carve, the `spec` pin follows the leg's `main` through declared changes, ruled 2026-10-09, recorded as a measured snapshot outside these claims) |
 | three, first half | openWallet standalone, from the code leg's root | **RUN-GREEN** (21 / 42 / 11 of 11, plain and `--strict`; syntax gate 0; pytest 37 passed, 1 skipped; a posture under no binding refused) |
-| three, second half | D5's neutrality gate over the composed adapter | **PENDING** group 5 ("Start now, neutrality half later (Recommended)"); command above |
-| four | every verifier observed refusing a mutated input | **RUN-GREEN** (every verifier refused every mutation in the table, including a `code` gitlink and `contracts/code-pin.yaml` that disagree, either way round; see Finding 1 on the runbook's 3c exit code) |
+| three, second half | D5's neutrality gate over the composed adapter | **RUN-GREEN** (opensoft/openXwallet `a02c6c74`: openXwallet's own tree and the openxFactory `governance/` export EMPTY, plain and `--strict`; 110 of 110 trees the suites build EMPTY in both modes, exit codes equal; the self-test alone EMPTY. Re-confirmed at the commit group 5 lands. Finding 4: the code leg's checkout scanned in place, a tree outside the three kinds, differs by one count line) |
+| four | every verifier observed refusing a mutated input | **RUN-GREEN** (every verifier refused every mutation in the table, including a `code` gitlink and `contracts/code-pin.yaml` that disagree, either way round, and part three's `neutral()` given a one-byte change; see Finding 1 on the runbook's 3c exit code) |
 | five | the shape's `validate` at this root | **RUN-GREEN** (`pins ok`) |
-| consumer | `P` = `code/P` = `openWallet/code/P` = `openXwallet/openWallet/code/P`, one sha256 | **depth 1 RUN-GREEN** (88/88); depths 2 and 3 **PENDING** groups 5 and 6 |
+| consumer | `P` = `code/P` = `openWallet/code/P` = `openXwallet/openWallet/code/P`, one sha256 | **depths 1 and 2 RUN-GREEN** (88/88 at each; openXwallet's pin holds the eight strings); depth 3 **PENDING** group 6 |
 
-`wallet-v1.6` is ALLOCATED and is **not yet to be tagged**. The tag waits for
-two things:
-- this document's PENDING half, filled and green;
-- the three rulesets ACTIVE (task 4.7).
+`wallet-v1.6` is ALLOCATED and is **not yet to be tagged**. Every part of this
+proof has now run. The tag waits for three things, and nothing else:
+- (a) this proof landing on this root's `main`;
+- (b) the spec re-pin landing. After the carve, the `spec` pin follows the
+  leg's `main` through declared changes (part two (b)), to the archive merge
+  `1924500354f472a6298c02db44a3ae2b21b8908e`. That re-pin is
+  opensoft/openWallet#5, open at the run. The re-pin to `1506bbdb` landed as
+  #4, `5a444cf2`;
+- (c) the three rulesets ACTIVE (task 4.7).
 
-Then the operator cuts it (task 4.9).
+The tag goes on this root's `main` after (a) and (b), on the root commit that
+carries the completed proof ("The root commit carrying the completed proof
+(Recommended)", ruled 2026-10-09). The operator cuts it (task 4.9) once (c)
+holds as well, and the release record names the commits that root commit pins.
+Separately, the adapter half's measured head, `a02c6c74`, is re-confirmed when
+group 5 lands.
 
 **Rollback (runbook Phase 4, written before the phase): revert the commit that
 adds this document.** It is documentation. It moves no pin, changes no leg, and

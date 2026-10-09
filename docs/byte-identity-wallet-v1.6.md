@@ -38,17 +38,26 @@ precondition of a tag.
 **The tag.** Brett Heap ruled the number on 2026-10-08, in session, by multiple
 choice, label verbatim: **"wallet-v1.6 (Recommended)"**. It continues
 openXwallet's `wallet-v1.0`…`wallet-v1.5` series (RULED Q4, "openWallet
-continues wallet-v* (Recommended)"). The number is ALLOCATED, and **the tag is
-NOT cut.** It waits for three things (runbook Phase 6, task 4.9, an operator
-act):
+continues wallet-v* (Recommended)"). At the run, the number was ALLOCATED and
+**the tag was NOT cut.** It waited for three things (runbook Phase 6, task 4.9,
+an operator act):
 - this proof landing on this root's `main`;
 - the spec re-pin landing (part two (b): after the carve, the `spec` pin
   follows the leg's `main` through declared changes);
 - the three rulesets of Phase 5 (task 4.7) ACTIVE.
 
-It goes on this root's `main` after the first two, on the root commit that
+It was to go on this root's `main` after the first two, on the root commit that
 carries the completed proof. Brett Heap ruled that on 2026-10-09, label
 verbatim: **"The root commit carrying the completed proof (Recommended)"**.
+
+**The tag is now cut.** The annotated tag `wallet-v1.6` (tag object
+`3acfa611b69503e809043faff5f3622cc008a3eb`) was cut on 2026-10-09 on
+`b0af7c2ce53d63786a08a20aa3602a6f90345606`. That is the merge of
+opensoft/openWallet#7, the release commit `88345cc8` on `b4580d16`. Brett Heap
+ruled its place on 2026-10-09, label verbatim: **"Release commit on b4580d16,
+tag its merge (Recommended)"**. By then the proof and the spec re-pin had
+landed (opensoft/openWallet#5 as `bead4bd8`), and openXwallet's `tasks.md`
+records 4.7's rulesets ACTIVE before the cut.
 
 **The part run last.** On 2026-10-08, by multiple choice, label verbatim:
 **"Start now, neutrality half later (Recommended)"**. Part three's second half
@@ -94,8 +103,9 @@ time of the run carries the same manifest and the same checker.
 
 The three carve layers that landed are the commits the runbook's filter-repo
 steps produced. Each leg's `A^2`, and the root's `b48bcb2^2`, equals the
-`carve-src` branch of the mirror that `git filter-repo` rewrote. None of the
-three repositories carries a tag.
+`carve-src` branch of the mirror that `git filter-repo` rewrote. At the run,
+none of the three repositories carried a tag. Since then the root carries
+`wallet-v1.6` ("The tag", above); the legs still carry none.
 
 ## How to reproduce this document
 
@@ -368,7 +378,11 @@ a neutrality failure:
 4. Their kinds are `--help` 2 and built trees 83 (recorded 1 and 82), with the
    self-test 5, no such path 1 and the live checkout 7 unchanged. The new
    `--help` and the new tree come from tests #40 added to
-   `tests/openwallet_pin/test_composed_entrypoints.py`.
+   `tests/openwallet_pin/test_composed_entrypoints.py`. So at `815b86ce`, 18
+   invocations hand the validator no built tree, where the record has
+   seventeen, and `--help` is invoked 3 times, twice in the kept suites and
+   once in the moved, where the record has 2, one in each. Part three keeps the
+   recorded values as the `a02c6c74` record.
 5. The replay counts 111 trees (recorded 110).
 6. 53 are at exit 0/0 in both modes and 58 at 1/1 (recorded 52 and 58): the
    new tree is clean.
@@ -1024,8 +1038,8 @@ this was run. What the snapshot shows:
 At the run, this root's `main` was `5a444cf22c7d6bae307223010d4d2008b04e9c51`,
 opensoft/openWallet#4's merge, which pins `spec` at `1506bbdb`.
 opensoft/openWallet#5, which re-pins it at the archive merge `19245003`, was
-open. This document's branch still pins `15c15bbd`, the commit parts zero to
-five measured.
+open; it has since landed as `bead4bd8`. This document's branch then still
+pinned `15c15bbd`, the commit parts zero to five measured.
 
 ### The root: the lockstep commit, HEAD^2 → HEAD
 
@@ -1679,8 +1693,9 @@ The adapter pins this root at `1c68717f`, and its `code` gitlink is `72313daa`,
 the code-leg commit every part above measured. At `815b86ce` it pins
 `b0af7c2c`; the code leg is still `72313daa`. The gate reads only
 `openWallet/code`, so the spec re-pins of part two (b) move no byte it reads.
-If the code pin moves before the tag, this half runs again against the new
-pin, and so do parts zero to five.
+Had the code pin moved before the tag, this half would have run again against
+the new pin, and so would parts zero to five. It did not: the tagged commit
+`b0af7c2c` pins code at `72313daa`.
 
 ---
 
@@ -2122,7 +2137,10 @@ tree.
   part one (b). If it moves the code leg's bytes, it moves that leg's pin, and
   this proof must be re-run against the new pin before the tag. The `spec` pin
   moves only as part two (b) states, and the release record names the commit it
-  pins.
+  pins. The release commit is `88345cc8`, merged as `b0af7c2c`
+  (opensoft/openWallet#7). It moves no byte of the code leg, which stays at
+  `72313daa`, and the eight per-file digests it records are part one (b)'s eight
+  strings.
 - **The rulesets** (task 4.7), an org-admin act.
 
 ## Verdict
@@ -2140,23 +2158,27 @@ tree.
 | five | the shape's `validate` at this root | **RUN-GREEN** (`pins ok`) |
 | consumer | `P` = `code/P` = `openWallet/code/P` = `openXwallet/openWallet/code/P`, one sha256 | **depths 1 and 2 RUN-GREEN** (88/88 at each; openXwallet's pin holds the eight strings); depth 3 **PENDING** group 6 |
 
-`wallet-v1.6` is ALLOCATED and is **not yet to be tagged**. Every part of this
-proof has now run. The tag waits for three things, and nothing else:
+At the run, `wallet-v1.6` was ALLOCATED and **not yet to be tagged**. Every
+part of this proof has now run. The tag waited for three things, and nothing
+else:
 - (a) this proof landing on this root's `main`;
 - (b) the spec re-pin landing. After the carve, the `spec` pin follows the
   leg's `main` through declared changes (part two (b)), to the archive merge
-  `1924500354f472a6298c02db44a3ae2b21b8908e`. That re-pin is
-  opensoft/openWallet#5, open at the run. The re-pin to `1506bbdb` landed as
-  #4, `5a444cf2`;
+  `1924500354f472a6298c02db44a3ae2b21b8908e`. That re-pin was
+  opensoft/openWallet#5, open at the run; it landed as `bead4bd8`. The re-pin
+  to `1506bbdb` landed as #4, `5a444cf2`;
 - (c) the three rulesets ACTIVE (task 4.7).
 
-The tag goes on this root's `main` after (a) and (b), on the root commit that
-carries the completed proof ("The root commit carrying the completed proof
-(Recommended)", ruled 2026-10-09). The operator cuts it (task 4.9) once (c)
-holds as well, and the release record names the commits that root commit pins.
-Separately, the adapter half, measured at `a02c6c74`, was re-confirmed at
-`815b86ce` when group 5 landed.
+The tag was to go on this root's `main` after (a) and (b), on the root commit
+that carries the completed proof ("The root commit carrying the completed proof
+(Recommended)", ruled 2026-10-09), cut by the operator (task 4.9) once (c) held
+as well, with the release record naming the commits that root commit pins. The
+annotated tag `wallet-v1.6` (tag object `3acfa611`) was cut on 2026-10-09 on
+`b0af7c2c`, opensoft/openWallet#7's merge of the release commit on `b4580d16`
+("Release commit on b4580d16, tag its merge (Recommended)"); see "The tag",
+above. Separately, the adapter half, measured at `a02c6c74`, was re-confirmed
+at `815b86ce` when group 5 landed.
 
 **Rollback (runbook Phase 4, written before the phase): revert the commit that
 adds this document.** It is documentation. It moves no pin, changes no leg, and
-nothing is tagged.
+tags nothing.

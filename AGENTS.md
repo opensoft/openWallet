@@ -117,10 +117,11 @@ After the split, this root owns:
 - **the pins**: `contracts/spec-pin.yaml` and `contracts/code-pin.yaml` (in
   lockstep with the gitlinks), and `contracts/shape-pin.yaml`;
 - **the release identity**: `contracts/manifest.yaml`, `contracts/CHANGELOG.md`
-  and `contracts/releases/`, all arriving at the carve, plus the annotated
+  and `contracts/releases/`, all carved from openXwallet, plus the annotated
   `wallet-v*` tag, which is cut here and on no leg;
-- **the proof**: `docs/byte-identity-<first tag>.md`, beside the carved lineage
-  record `docs/byte-identity-wallet-v1.0.md`;
+- **the proof**: `docs/byte-identity-wallet-v1.6.md`, for the first tag
+  (allocated, not yet cut), beside the carved lineage record
+  `docs/byte-identity-wallet-v1.0.md`;
 - `LICENSE`, carved;
 - the cutover runbook and `.specify/`.
 

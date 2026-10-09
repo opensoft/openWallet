@@ -216,10 +216,12 @@ scripts/repo_shape.py            shared helpers, standard library only
 .specify/                        Speckit: templates, scripts, the git extension
                                  and its park/resume overlay (this project's own)
 docs/openwallet-cutover-runbook.md  the carve's procedure (this project's own)
+docs/byte-identity-wallet-v1.6.md   the carve's proof, the declared path mapping
+                                    (this project's own)
 ```
 
-Arriving at the carve (see the runbook): `LICENSE`, `contracts/manifest.yaml`,
-`contracts/CHANGELOG.md`, `contracts/releases/` and
+Carved from opensoft/openXwallet (see the runbook): `LICENSE`,
+`contracts/manifest.yaml`, `contracts/CHANGELOG.md`, `contracts/releases/` and
 `docs/byte-identity-wallet-v1.0.md`.
 
 Everything under `scripts/`, plus `contracts/repository-naming.yaml` and

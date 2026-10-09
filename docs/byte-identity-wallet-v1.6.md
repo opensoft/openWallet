@@ -11,7 +11,9 @@ a DECLARED PATH MAPPING", and `tasks.md` 4.6. The procedure is this root's
 Tracked on: opensoft/openXwallet#25
 Run: 2026-10-09 (UTC), by lane `openXwallet-2`. Part three's second half, the
 consumer's depth 2 and the spec-pin snapshot were run the same day, against
-opensoft/openXwallet `a02c6c74`
+opensoft/openXwallet `a02c6c74`; part three's second half and depth 2
+re-confirmed at `815b86ce`, group 5's landing commit (opensoft/openXwallet#40's
+merge), 2026-10-09
 
 **The claim.** openWallet's first release on this root, `wallet-v1.6`, is a
 **declared path mapping** of opensoft/openXwallet at one named commit into three
@@ -53,10 +55,10 @@ verbatim: **"The root commit carrying the completed proof (Recommended)"**.
 needs the composed adapter, which group 5 builds on lane `openXwallet-3`'s
 branch `rebuild/adapter-group-5` of opensoft/openXwallet. This document's first
 commit wrote that half as PENDING. A follow-up commit ran it on 2026-10-09
-against the branch's head, `a02c6c74`, and quotes the measured output. Every
-part below is now RUN. Two things stay open, each stated where it belongs:
-- depth 3 of the consumer statement, inside openxFactory (group 6);
-- part three's second half, re-confirmed at the commit group 5 lands.
+against the branch's head, `a02c6c74`, and quotes the measured output. A later
+commit re-confirmed it at `815b86ce`, the commit group 5 landed. Every part
+below is now RUN. One thing stays open, stated where it belongs: depth 3 of the
+consumer statement, inside openxFactory (group 6).
 
 ## The NAMED CARVE COMMIT, and what was measured
 
@@ -87,6 +89,7 @@ time of the run carries the same manifest and the same checker.
 | root, lockstep commit | `b48bcb20b31dece4d582444cf01f617a799d297d` | the root's carve layer and its manifest field edits, merged with both leg pins in ONE commit; first parent `2b8e2234`, the root `main` before |
 | root, measured | `1c68717f1ae4ae132d6942f8c7f533baf292d0b6` | opensoft/openWallet#2's merge; it pins spec `15c15bbd` and code `72313daa` |
 | openXwallet, the composed adapter | `a02c6c7487171c110490b234643a7e586ed47153` | the head of `rebuild/adapter-group-5` (lane `openXwallet-3`, group 5) at the run, on openXwallet `main` `206e0d4f`; it pins this root at `1c68717f` (part three, second half) |
+| openXwallet, group 5 landed | `815b86cef18c6227f649d2cefedb05720069362b` | opensoft/openXwallet#40's merge of `rebuild/adapter-group-5-r2` (head `36c365da`), where part three's second half was re-confirmed; it pins this root at `b0af7c2c` (the `wallet-v1.6` release) and its code leg at `72313daa` |
 | spec leg, after the carve | `1506bbdb4194a779bef63d8c4e5eecc7eac0bd68`, then `1924500354f472a6298c02db44a3ae2b21b8908e` | opensoft/openWallet-spec#3's merge (the birth change `bind-approval-posture-vocabulary`), then #4's (its archive): declared post-carve changes that the root's `spec` pin follows (part two (b)) |
 
 The three carve layers that landed are the commits the runbook's filter-repo
@@ -331,6 +334,56 @@ The blocks added with part three's second half were handled in two ways:
   - the one output that varied: pytest's elapsed time, 272.31 s and 32.31 s
     where this text quotes 421.89 s and 30.15 s. The quoted lines stay as
     first measured.
+
+**Re-confirmation at `815b86ce` (2026-10-09).** Group 5 landed as
+`815b86cef18c6227f649d2cefedb05720069362b`, opensoft/openXwallet#40's merge of
+`rebuild/adapter-group-5-r2` (head `36c365da`). At that merge openXwallet pins
+this root at `b0af7c2c`, the `wallet-v1.6` release merge
+(opensoft/openWallet#7), and the code leg is still `72313daa`. The blocks of
+part three's second half, 4.9 and depth 2 were run again there, extracted by
+line number from this text as it stood at `b4580d16`, under the same git,
+Python and packages. There were five declared deviations: `WORK` was a fixed
+scratch tree, not `mktemp -d`; the adapter's checkout named `815b86ce` instead
+of `a02c6c74`; depth 2's block ran in `$WORK/oxw-adapter` with
+`PREFIX=openWallet/code/`, as its paragraph says; lane `openXwallet-3`'s gate,
+for which this text prints no command, ran as
+`python3 -B scripts/neutrality-gate.py --openxfactory-export <dir>` in a second
+fresh clone; and any diff of the export was withheld. Rows that name the root
+pin were compared with `b0af7c2c` in place of `1c68717f`. Of 38 rows compared,
+29 are the same, and they include every neutrality row: (i) and (ii) EMPTY,
+plain and `--strict`; (ii)'s summary lines; (i) as both validators print it;
+the hook's sha256; the moved suites; the status checks; the self-test, the path
+that does not exist, Finding 4's code-leg and carve-commit trees and the code
+copy; 4.9; and depth 2, 88/88 three ways, with the pin summary at `b0af7c2c`
+and the eight sha256s. The other 9 differ by a count or a wording, and none is
+a neutrality failure:
+1. The pin verifier reads `(tag label wallet-v1.6)` for
+   `(tag label <none yet>)`, and ends `present and unmodified` for `present`:
+   #40 re-pinned the root to the release, with its tag label, and reworded the
+   verifier.
+2. The kept suites print `96 passed` (recorded `91 passed`): #40 added tests.
+3. They record `6 file(s), 98 validator invocation(s)` (recorded 5 and 96).
+   The sixth file, `tests/openwallet_pin/test_consumer_surface.py`, is new in
+   #40 and spells the validator's name.
+4. Their kinds are `--help` 2 and built trees 83 (recorded 1 and 82), with the
+   self-test 5, no such path 1 and the live checkout 7 unchanged. The new
+   `--help` and the new tree come from tests #40 added to
+   `tests/openwallet_pin/test_composed_entrypoints.py`.
+5. The replay counts 111 trees (recorded 110).
+6. 53 are at exit 0/0 in both modes and 58 at 1/1 (recorded 52 and 58): the
+   new tree is clean.
+7. The per-tree table gains `openwallet_pin`'s
+   `test_a_core_that_exits_zero_while_loading_refuses[validator]` as #13,
+   EMPTY, 0/0 in both modes. The table numbers trees in invocation order, so a
+   test added early renumbers every row after it: the 110 recorded rows follow
+   unchanged and in order, #13 to #110 as #14 to #111, and all 111 are EMPTY
+   with equal exit codes in both modes.
+8. The neutral `--help` diff is `3c3,4` (recorded `75,79c75,79`): #40 rewrote
+   the adapter's docstring. `--help` is outside the verdict, as part three
+   already says.
+9. Lane `openXwallet-3`'s gate prints the reworded summary quoted under part
+   three's second half, counting 122 suite invocations (recorded 117), and
+   exits 0: #40 reworded the summary and added tests.
 
 ---
 
@@ -1169,9 +1222,12 @@ neutrality half later (Recommended)". The composed adapter is task 5.2, built by
 lane `openXwallet-3` on its branch `rebuild/adapter-group-5` of
 opensoft/openXwallet. The run measured that branch's head at the time,
 `a02c6c7487171c110490b234643a7e586ed47153`, which sits on openXwallet `main`
-`206e0d4f`. The branch can still move before its pull request opens. The commit
-that lands is confirmed by running this half's commands again at it, when that
-pull request lands.
+`206e0d4f`. The branch could still move before its pull request opened, so the
+commit that landed was to be confirmed by running this half's commands again at
+it. Group 5 landed as `815b86ce`, opensoft/openXwallet#40's merge of a second
+branch, `rebuild/adapter-group-5-r2` (head `36c365da`), whose history does not
+contain `a02c6c74`. This half's commands, run again there on 2026-10-09,
+re-confirm it (below).
 
 **The claim** (D5; `tasks.md` 5.4) has three conditions. The carve-commit
 validator and the composed adapter, run over the same tree, must:
@@ -1180,7 +1236,7 @@ validator and the composed adapter, run over the same tree, must:
 - do both plain and `--strict`.
 
 The trees are three kinds:
-- (i) openXwallet's own tree, at `a02c6c74`;
+- (i) openXwallet's own tree, at `a02c6c74`, and again at `815b86ce`;
 - (ii) an export of openxFactory's live `governance/` tree;
 - (iii) every fixture tree the kept and moved test suites build.
 
@@ -1209,8 +1265,8 @@ OK openwallet-pin verified: openWallet@1c68717f1ae4ae132d6942f8c7f533baf292d0b6 
 ```
 
 The adapter pins this root at `1c68717f`, the commit parts zero to five
-measured, and its code leg at `72313daa`. The rest of the setup works like
-this:
+measured, and its code leg at `72313daa`. At `815b86ce` it pins `b0af7c2c`; the
+code leg is still `72313daa`. The rest of the setup works like this:
 - Each side's stdout and stderr go to one file, with the exit code appended,
   so one `diff` judges all three conditions at once.
 - `python3 -B` keeps the composed run from leaving a bytecode cache behind.
@@ -1595,10 +1651,13 @@ exported elsewhere, are EMPTY.
 at `a02c6c74`, run with `--openxfactory-export` over the same export from a
 second fresh clone. It printed `neutrality-gate: IDENTICAL: 4 target run(s)
 over 2 tree(s) and 117 suite invocation(s) over 7 suite(s); every stdout
-byte-identical, every exit code equal` and exited 0. It judges stdout and the
-exit code, and it compares each suite invocation at the moment that invocation
-is made. This document's commands, above, are the authority. Finding 4 records
-what that gate's suite mirrors do not reach.
+byte-identical, every exit code equal` and exited 0. At `815b86ce`, run the
+same way, it printed `neutrality-gate: IDENTICAL: 2 tree(s) × 2 modes = 4
+target run(s), and 122 suite invocation(s) × 2 modes = 244 suite record(s) over
+7 suite(s); every stdout byte-identical, every exit code equal` and exited 0.
+It judges stdout and the exit code, and it compares each suite invocation at
+the moment that invocation is made. This document's commands, above, are the
+authority. Finding 4 records what that gate's suite mirrors do not reach.
 
 **Part three, second half: RUN-GREEN** over D5's three kinds of tree, at
 opensoft/openXwallet `a02c6c74`:
@@ -1608,10 +1667,17 @@ opensoft/openXwallet `a02c6c74`:
   with equal exit codes;
 - the self-test alone: EMPTY.
 
+Re-confirmed at `815b86ce` on 2026-10-09: the same, with 111 of 111 built
+trees, 53 at 0/0 and 58 at 1/1. They are the 110 above, in the same order,
+plus `openwallet_pin`'s
+`test_a_core_that_exits_zero_while_loading_refuses[validator]` inserted as #13,
+so the table's #13 to #110 are #14 to #111 there.
+
 `neutral()` itself was observed refusing a one-byte change (part four, 4.9).
 
 The adapter pins this root at `1c68717f`, and its `code` gitlink is `72313daa`,
-the code-leg commit every part above measured. The gate reads only
+the code-leg commit every part above measured. At `815b86ce` it pins
+`b0af7c2c`; the code leg is still `72313daa`. The gate reads only
 `openWallet/code`, so the spec re-pins of part two (b) move no byte it reads.
 If the code pin moves before the tag, this half runs again against the new
 pin, and so do parts zero to five.
@@ -1860,7 +1926,7 @@ A consumer sees one prefix and nothing else:
 | --- | --- | --- |
 | 0 | the code leg, `opensoft/openWallet-code` at `72313daa` | the referent |
 | 1 | this root, `code/P` | **88/88** paths of the code leg at `72313daa` have the same sha256 at `code/P` in this root's checkout (run below) |
-| 2 | openXwallet, `openWallet/code/P` | **88/88** paths have the same sha256 at `openWallet/code/P` in openXwallet at `a02c6c74`, where the adapter rebuild mounts this root (task 5.1), and at `code/P` in this root (run below). openXwallet's pin `files:` hold part one (b)'s eight strings |
+| 2 | openXwallet, `openWallet/code/P` | **88/88** paths have the same sha256 at `openWallet/code/P` in openXwallet at `a02c6c74`, and again at `815b86ce`, where the adapter rebuild mounts this root (task 5.1), and at `code/P` in this root (run below). openXwallet's pin `files:` hold part one (b)'s eight strings |
 | 3 | openxFactory, `openXwallet/openWallet/code/P` | **PENDING group 6**: openxFactory's re-path and bump (`tasks.md` group 6) |
 
 ```bash
@@ -1888,9 +1954,9 @@ depth 1 are part one (b)'s. At depths 2 and 3 they must equal the same eight
 strings, and openXwallet's pin `files:` and openxFactory's re-pathed `files:`
 are to hold them (D6).
 
-**Depth 2**, in openXwallet at `a02c6c74` (part three's `oxw-adapter`). The
-block above, run from that checkout's root with `PREFIX=openWallet/code/`,
-prints:
+**Depth 2**, in openXwallet at `a02c6c74`, and again at `815b86ce` (part
+three's `oxw-adapter`). The block above, run from that checkout's root with
+`PREFIX=openWallet/code/`, prints:
 
 ```
 88/88 path(s) P of the code leg at 72313daab1f2 have the same sha256 at openWallet/code/P
@@ -1942,8 +2008,10 @@ aed3978e8ae952f3ff5b3de1f672bba5da350d5aaeb442feafaa870b4de4be91 code/contracts/
 ```
 
 The eight `sha256` values are part one (b)'s eight, row for row, and each
-`path` is `code/contracts/…` under the mount `openWallet/`. **Depth 2:
-RUN-GREEN.** Depth 3 waits for openxFactory's re-path and bump (group 6).
+`path` is `code/contracts/…` under the mount `openWallet/`. Re-run at
+`815b86ce`, both blocks print the same lines, except that the pin summary names
+`b0af7c2c` (`commit b0af7c2ce53d`). **Depth 2: RUN-GREEN.** Depth 3 waits for
+openxFactory's re-path and bump (group 6).
 
 ---
 
@@ -2040,8 +2108,9 @@ tree.
 
 - **Depth 3 of the consumer statement**, PENDING group 6 (above).
 - **The composed adapter's landing commit.** Part three's second half measured
-  `rebuild/adapter-group-5` at `a02c6c74`. The commit group 5 lands is
-  confirmed by running that half's commands again at it.
+  `rebuild/adapter-group-5` at `a02c6c74`, and the lines it quotes are that
+  run's. It was re-confirmed at `815b86ce`, the commit group 5 landed; how that
+  run's output differs is recorded under "How to reproduce this document".
 - **The spec leg after the carve** (part two (b)). Its declared post-carve
   changes are measured there as a snapshot. They are outside the byte-identity
   claims, which are made at the carve layer and A → B.
@@ -2066,7 +2135,7 @@ tree.
 | two (a) | git blob + mode identity 100% at the carve layer, per path | **RUN-GREEN** (80/80, 38/38, 10/10; each commit A is the pure carve) |
 | two (b) | every change after the carve layer is declared | **RUN-GREEN** (helpers 3 and 5: 0 refusals at each B, each pinned leg commit, the lockstep commit and `1c68717f`; 0 changed lines outside a declared edit; additions: the corpus binding and `LICENSE`. After the carve, the `spec` pin follows the leg's `main` through declared changes, ruled 2026-10-09, recorded as a measured snapshot outside these claims) |
 | three, first half | openWallet standalone, from the code leg's root | **RUN-GREEN** (21 / 42 / 11 of 11, plain and `--strict`; syntax gate 0; pytest 37 passed, 1 skipped; a posture under no binding refused) |
-| three, second half | D5's neutrality gate over the composed adapter | **RUN-GREEN** (opensoft/openXwallet `a02c6c74`: openXwallet's own tree and the openxFactory `governance/` export EMPTY, plain and `--strict`; 110 of 110 trees the suites build EMPTY in both modes, exit codes equal; the self-test alone EMPTY. Re-confirmed at the commit group 5 lands. Finding 4: the code leg's checkout scanned in place, a tree outside the three kinds, differs by one count line) |
+| three, second half | D5's neutrality gate over the composed adapter | **RUN-GREEN** (opensoft/openXwallet `a02c6c74`: openXwallet's own tree and the openxFactory `governance/` export EMPTY, plain and `--strict`; 110 of 110 trees the suites build EMPTY in both modes, exit codes equal; the self-test alone EMPTY. Re-confirmed at `815b86ce`, group 5's landing commit (111 of 111 built trees there). Finding 4: the code leg's checkout scanned in place, a tree outside the three kinds, differs by one count line) |
 | four | every verifier observed refusing a mutated input | **RUN-GREEN** (every verifier refused every mutation in the table, including a `code` gitlink and `contracts/code-pin.yaml` that disagree, either way round, and part three's `neutral()` given a one-byte change; see Finding 1 on the runbook's 3c exit code) |
 | five | the shape's `validate` at this root | **RUN-GREEN** (`pins ok`) |
 | consumer | `P` = `code/P` = `openWallet/code/P` = `openXwallet/openWallet/code/P`, one sha256 | **depths 1 and 2 RUN-GREEN** (88/88 at each; openXwallet's pin holds the eight strings); depth 3 **PENDING** group 6 |
@@ -2085,8 +2154,8 @@ The tag goes on this root's `main` after (a) and (b), on the root commit that
 carries the completed proof ("The root commit carrying the completed proof
 (Recommended)", ruled 2026-10-09). The operator cuts it (task 4.9) once (c)
 holds as well, and the release record names the commits that root commit pins.
-Separately, the adapter half's measured head, `a02c6c74`, is re-confirmed when
-group 5 lands.
+Separately, the adapter half, measured at `a02c6c74`, was re-confirmed at
+`815b86ce` when group 5 landed.
 
 **Rollback (runbook Phase 4, written before the phase): revert the commit that
 adds this document.** It is documentation. It moves no pin, changes no leg, and

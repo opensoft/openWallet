@@ -25,23 +25,25 @@ kind: contract_manifest
 # repository, never by the carve.
 # ============================================================================
 
-# wallet-v1.5 moves this line and NOTHING ELSE in this file, for the same reason
-# wallet-v1.4 did. The release is a REGISTER-READER WIDENING
-# (scripts/validate-openxwallet.py withdraws the row-count cap in favour of the
-# three invariants that bounded it, and keys seat identity on the pair
-# (council_id, seat_id) so a second commissioned body can be registered); no
-# contract content moves, so every per-file `contract_schema_version` and every
-# `sha256:` below is unchanged and PROVEN so by recomputation, not asserted. The
-# reader is content-addressed BY COMMIT (see the comment on the first row below,
-# and openxFactory's `contracts/openxwallet-pin.yaml` `pinned_by_commit_only:`
-# list), which is exactly why a reader change is a commit move for a consumer
-# and never a digest move.
+# wallet-v1.6 moves this line and NOTHING ELSE in this file. It is the SPLIT
+# release, the first cut on the openWallet root: the standard moved from
+# opensoft/openXwallet into this root and its two legs, and NO digested byte
+# moved. The other lines that differ from the wallet-v1.5 manifest landed
+# BEFORE this cut, as the carve's declared field edits in the root's lockstep
+# commit (task 4.5): `carved_from:` below, each owned row's `path:` gaining
+# `code/` with its `source_path:`, and the consumed hermes-job-envelope row
+# removed. Every per-file `contract_schema_version` and every `sha256:` below
+# is unchanged from wallet-v1.5 and PROVEN so by recomputation over the bytes
+# the `code` gitlink holds, not asserted. The validator stays
+# content-addressed BY COMMIT (see the comment on the first row below), and
+# that commit is now the code leg's, which this root pins.
 #
-# The wallet-v1.4 note this replaces, kept because it names the class rather
-# than the release: that cut was a reader correction withdrawing a
-# false-positive `register-no-active-row` against a REVOKED review-class grant,
-# and it moved this line and nothing else too.
-contract_bundle_version: wallet-v1.5
+# The wallet-v1.5 note this replaces, kept because it names the class rather
+# than the release: that cut was a REGISTER-READER WIDENING (the row-count cap
+# withdrawn, seat identity keyed on the pair (council_id, seat_id)), and it
+# moved this line and nothing else too. That reader is not in this bundle's
+# code leg: it stays in openXwallet, the adapter.
+contract_bundle_version: wallet-v1.6
 
 # The machine-read one of THREE provenance records for the carve. The other two
 # are `carve_commit:` in openxFactory's contracts/openxwallet-pin.yaml (at P3)

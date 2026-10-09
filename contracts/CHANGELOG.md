@@ -1,4 +1,4 @@
-# openXwallet contract changelog
+# openWallet contract changelog
 
 Status: standard
 
@@ -16,6 +16,229 @@ publishes a schema of its own there. The one consumed member
 (`contracts/schemas/hermes-job-envelope.schema.yaml`, vendored from openxFactory
 at a digest pin) carries `release_surface: false` and is never part of a wallet
 bundle.
+
+---
+
+## wallet-v1.6 — 2026-10-09 (the split: the standard moves to opensoft/openWallet; NO contract content moves)
+
+**Change class: ADDITIVE MINOR for the bundle, and REDUCING for what an
+UNBOUND run of the validator admits** — the two are stated rather than
+averaged, and the second runs the opposite way from `wallet-v1.5`'s, which
+removed a refusal: this one adds one, for one kind of caller. No contract
+content changes: **none of the eight digested artifacts is touched**, every
+per-file `contract_schema_version` is unchanged, and the only line this release
+moves in [`manifest.yaml`](./manifest.yaml) is `contract_bundle_version`. The
+proof is mechanical and was run before release —
+`contracts/releases/wallet-v1.6.digests.yaml` was CUT BY RECOMPUTATION over the
+bytes this root's `code` gitlink holds at `72313daa` (manifest-owned rows
+selected by DECLARED FIELD, sha256 over the raw git blob bytes read through the
+gitlink, bytewise path order, every value cross-checked against the manifest's
+recorded digest and the cut refused on any mismatch) and differs from
+`wallet-v1.5.digests.yaml` in exactly TEN lines: `bundle_tag`, `repository`
+(`opensoft/openXwallet` → `opensoft/openWallet`) and the eight `path:` lines,
+each gaining `code/`. No `digest:`, `git_mode:`, `schema_version:` or id moves.
+The same procedure was run against `wallet-v1.5`'s inputs first (openXwallet's
+manifest at the carve commit, the code leg's carve layer) and reproduced that
+file byte-for-byte. Each of the eight digests agrees SIX ways: this record, the
+manifest, `code/P` on disk, the blob at the `code` gitlink, openXwallet's
+manifest at the carve commit, and the `wallet-v1.5` record.
+
+Realizes task 4.9 of the openXwallet change `split-openwallet-neutral-core` —
+**ratified 2026-10-08T17:10:47Z by Brett Heap, operator authority**, verbatim
+"ratify 26 and merge" — tracked on opensoft/openXwallet#25. The number was ruled
+2026-10-08 by multiple choice, label verbatim **"wallet-v1.6 (Recommended)"**,
+continuing openXwallet's series under the ruling "openWallet continues wallet-v*
+(Recommended)". The entries below this one are openXwallet's releases, carried
+verbatim with this file: they describe openXwallet commits and paths, and are
+history.
+
+### What moved, and where
+
+The standard now lives in THREE repositories, one openRepoShape project, and
+openXwallet becomes the openxFactory adapter that pins it:
+
+| Repository | Mounted at | Holds |
+|---|---|---|
+| `opensoft/openWallet` (this root) | `.` | the release identity (`contracts/manifest.yaml`, this changelog, `contracts/releases/`, the annotated `wallet-v*` tag), the pins, the proof, `LICENSE` |
+| `opensoft/openWallet-code` | `code/` | the two contract families, the packaged corpus, the conformance validator, the syntax gate, their tests and checks (RULED Q7, "Code leg, declared override (Recommended)") |
+| `opensoft/openWallet-spec` | `spec/` | the promoted requirements, the Speckit features and archive records, and openWallet's own OpenSpec instance |
+
+Everything arrived as a **DECLARED PATH MAPPING** of openXwallet at the NAMED
+CARVE COMMIT `90111df262d6f54f7e82651d860adc12345f83f4` (Brett Heap,
+2026-10-08T18:07:19Z, "name 90111df as the carve commit, do 2.4 and 2.5"),
+recorded in [`manifest.yaml`](./manifest.yaml)'s `carved_from:`: 232 tracked
+paths in 232 rows, 128 moved (80 to the code leg, 38 to the spec leg, 10 to
+this root), none renamed, every carved byte identical in git blob and mode at
+its carve layer, and every later difference a declared edit. The proof, parts
+zero to five, each able to fail, is
+[`../docs/byte-identity-wallet-v1.6.md`](../docs/byte-identity-wallet-v1.6.md);
+its precedent, [`../docs/byte-identity-wallet-v1.0.md`](../docs/byte-identity-wallet-v1.0.md),
+is carried as lineage.
+
+What stays in openXwallet, because it is the factory layer's USE of wallet
+authority and not the standard: the vendored
+`contracts/schemas/hermes-job-envelope.schema.yaml`, rule (t) (the
+review-authority issuer anchor), the register reader (rule (u)), and the three
+`grant-review-*` negatives.
+
+### This release pins
+
+| Leg | Repository | Commit | `tree_sha256` (`sorted-ls-tree-r-v1`) |
+|---|---|---|---|
+| spec | `opensoft/openWallet-spec` | `1924500354f472a6298c02db44a3ae2b21b8908e` | `37984e1d8b9af43c2393740dd774f568a9c3fd323c7fe6ec0e756e02d7232956` |
+| code | `opensoft/openWallet-code` | `72313daab1f229c049cb90998931564c1904dbbc` | `ee05d60d65a85d97142d5ee33f236b8fe8f999e626f2452276891ea89e312b5e` |
+
+`code` is the code leg's carve merge (commit A the pure carve `32c93355`,
+commit B the declared edits `75b990dc`), unmoved since. `spec` is the spec
+leg's `main` after its carve merge `15c15bbd` and its birth change
+`bind-approval-posture-vocabulary`, archived (ruled 2026-10-09, "Re-pin to the
+archive merge before the tag (Recommended)"), so this release carries the
+promoted requirement in its archived form. The root commit of this release is
+the target of the annotated `wallet-v1.6` tag, and its two gitlinks, with
+`contracts/spec-pin.yaml` and `contracts/code-pin.yaml` beside them, are the two
+rows above. **No leg is tagged**: a tag on a leg describes half a project.
+
+### What a consumer sees
+
+A path `P` in the code leg is `code/P` at this root, `openWallet/code/P` inside
+openXwallet, and `openXwallet/openWallet/code/P` inside openxFactory, with ONE
+sha256 at every depth. Measured: 88/88 of the code leg's paths at depth 1, and
+at depth 2 on the adapter rebuild's branch (opensoft/openXwallet `a02c6c74`);
+depth 3 waits for openxFactory's re-path (the change's group 6). The eight
+`digest:` strings in this release's record are the eight a consumer's `files:`
+block already holds at `wallet-v1.5`; only the path in front of them changes.
+**No consumer pins this root yet.** openXwallet's adapter rebuild (group 5) is
+the first, and openxFactory reaches this root only through openXwallet's pin.
+
+### The validator: extension points and ONE declared vocabulary binding
+
+The code leg's validator is openXwallet's, less the factory layer: hunks (a)–(e)
+of the carve manifest, 1 621 declared lines.
+- **Extension points, EMPTY by default** (design D5, RULED Q1, "In-process,
+  extension points (Recommended)"): `GRANT_RULES`, `SELF_TEST_HOOKS`,
+  `SELF_TEST_TAIL_HOOKS` and `TREE_CHECKS`, at exactly the positions rule (t)
+  and the register reader vacated. A layer that pins the code leg loads the
+  validator in process and appends to them; the validator never imports a
+  layer. openXwallet's adapter (group 5) composes rule (t) and the register
+  reader back this way.
+- **ONE DECLARED VOCABULARY BINDING** (design D4, RULED Q6, "Document plus
+  pointer, fail closed (Recommended)"): rule (g) reads its legal
+  approval-posture terms from `VOCABULARY_BINDING`, a document and a pointer the
+  CALLER declares, instead of from the vendored job envelope. The packaged
+  corpus is adjudicated under its own `CORPUS_VOCABULARY_BINDING`,
+  `contracts/openxwallet/examples/approval-vocabulary.binding.yaml` in the code
+  leg, which a repo scan never uses. The validator no longer needs the envelope
+  to start: the hard exit when it is absent left with hunk (a), and the adapter
+  keeps it unchanged.
+- **The requirement moved with it.** *Agent authority is grant scope, not a
+  parallel vocabulary* (`openxwallet-agent-profile`) now reads design D8's
+  text: the legal terms are exactly the keys of one declared binding supplied
+  by the consuming layer, and "Absent a declared binding, a grant naming any
+  approval posture SHALL be refused." Its new scenario is *no binding is
+  declared, so a posture is refused rather than admitted because nothing
+  forbade it*.
+
+### The REDUCING change, stated on its own
+
+**Absent a binding the vocabulary is EMPTY, and every key of every
+`approval_posture` in a scanned tree is refused** under the EXISTING code
+`authority-vocabulary-parallel` (`legal terms: []`), with one note saying no
+vocabulary is bound. Through `wallet-v1.5` the reader bound the envelope's
+three terms unconditionally, so a caller that runs this bundle's validator
+ALONE over a tree carrying a posture is refused where it used to pass. That is
+the only caller it reaches:
+- **Through openXwallet's adapter nothing changes.** The adapter binds the
+  envelope with no flag a caller can omit, and on its group-5 branch
+  (opensoft/openXwallet `a02c6c74`) D5's neutrality gate measured
+  its output byte-identical to the carve-commit validator's, plain and
+  `--strict`, with equal exit codes, over the three kinds of tree D5 names:
+  openXwallet's own tree, an export of openxFactory's live `governance/` tree,
+  and all 110 trees the test suites build (proof, part three). The sentence is
+  qualified to those three kinds (ruled 2026-10-09, "Qualify D5's sentence;
+  gate stays GREEN (Recommended)"): a validator's own packaged registry scanned
+  in place differs by one count line (proof, Finding 4).
+- **No consumer runs the code leg alone today.** Nothing pins it yet.
+- **A direct consumer's fix is to declare its binding**, never to strip its
+  postures: a default binding would be a second vocabulary nobody declared.
+
+Rule (g)'s refusal MESSAGE keeps its carve-commit wording, "the neutral job
+envelope", even when no envelope is bound — ruled 2026-10-09, "Correct D4's
+sentence (Recommended)". Rewording it would break the neutrality gate wherever
+rule (g) fires, so it can change only in a later release that moves the gate's
+baseline. The code string does not move.
+
+### Finding codes, and the corpus
+
+**No finding code is added, renamed, repurposed or retired.** Measured over the
+validator's literal codes: the code leg's validator emits 51, every one of them
+also emitted at the carve layer. The other 32 keep their strings and their
+meaning in openXwallet, whose adapter (group 5) composes them over this
+validator, and none is emitted by this validator run alone: 4 from rule (t)
+and its self-test probes (hunk (c)), and 28 from the register reader and its
+self-test (hunk (d)), every `register-*` code among them.
+
+Run alone from the code leg's root, the self-test reads `corpus: 21 positive
+example(s), 42 negative confirmation(s) across 11/11 requirements`: the three
+`grant-review-*` negatives and the `OXWR-R1`/`OXWR-R2` rows stay with the
+adapter. Composed, it reads 21 / 45 / 13 of 13, as the carve-commit validator
+does.
+
+### The manifest lines that moved
+
+- **At this release:** `contract_bundle_version: wallet-v1.5` → `wallet-v1.6`,
+  and the note above it.
+- **Before it, in the root's lockstep commit** (task 4.5, opensoft/openWallet#2,
+  `b48bcb20`), the carve's declared field edits: 67 declared lines, 0 refusals
+  from either line checker. `carved_from:` names `opensoft/openXwallet` at the
+  carve commit; each owned row's `path:` gains `code/`, and its `source_path:`
+  names `openWallet-code/contracts/…`; the consumed `hermes-job-envelope` row
+  and its comment block are removed.
+
+The release-surface rule above still selects by declared field. With the
+consumed row gone it selects every row, and the envelope it names is no longer
+in this repository.
+
+### The five values, and where each lives
+
+| Value | Where |
+|---|---|
+| per-file `contract_schema_version` | inside each artifact's bytes, in the code leg at `72313daa`, unchanged: `2` for `openxwallet-record`, `1` for the six other schemas; the custody registry carries none |
+| `contract_bundle_version: wallet-v1.6` | [`manifest.yaml`](./manifest.yaml), in the release commit |
+| the release commit with per-file digests | the release commit, with [`releases/wallet-v1.6.digests.yaml`](./releases/wallet-v1.6.digests.yaml) |
+| the `contracts/CHANGELOG.md` entry | this entry |
+| the annotated `wallet-v1.6` tag | this root, at the merge commit of the release pull request |
+
+The `wallet-v1.6` tag is an OPERATOR act that follows the human merge, as at
+every release since `wallet-v1.0`: an annotated tag at the landed merge commit,
+cut by the lane coordinator on the ratifying human's word. That merge commit
+descends from `b4580d16`, the root commit carrying the completed proof, and
+pins the same two leg commits. The tag is not cut on `b4580d16` itself, whose
+manifest still reads `wallet-v1.5` and which carries no `wallet-v1.6` record: a
+tag there would name a release whose five values disagree. Once anything pins
+the tag, its reversal is a following release, never a deleted tag.
+
+### What is NOT in this release
+
+**No byte of either leg moves, and no pin moves**, so no part of the proof has
+to run again for this cut. Open, and not this release's: depth 3 of the
+consumer statement (group 6), and part three's adapter half re-confirmed at the
+commit group 5 lands. Two pieces of manifest prose are not touched, because
+this release moves one manifest line: the corpus-count comment
+(`16 valid + 33 intended-invalid`, against 21 and 42 in the code leg), which
+design D3 books as a correction after the carve, and the header, which still
+describes openXwallet's own carve from openxFactory.
+
+### Evidence
+
+`make validate` at the release commit: names, manifest and lockstep pins,
+`pins ok`. The recomputation, its byte-for-byte control and its six-way
+cross-check, above, with the cut observed refusing a manifest digest changed by
+one hex digit (`7/8`, exit 1, nothing written). The code leg's own gates re-run
+at `72313daa` for this cut: the syntax gate exit 0; the validator `21 / 42 /
+11 of 11`, 0 errors and 0 warnings, plain and `--strict`; pytest `37 passed, 1
+skipped` (the skip is the previous-validator comparison the proof explains). The
+proof, [`../docs/byte-identity-wallet-v1.6.md`](../docs/byte-identity-wallet-v1.6.md):
+parts zero to five RUN-GREEN.
 
 ---
 

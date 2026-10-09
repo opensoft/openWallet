@@ -62,8 +62,8 @@ carved_from:
 #
 # Exclusion is by DECLARED FIELD, never by a `contracts/schemas/` path
 # heuristic -- that heuristic breaks the day openXwallet publishes a schema of
-# its OWN there. A row with no `member_class:` is OWNED (the eight below); the
-# one consumed member declares itself.
+# its OWN there. A row with no `member_class:` is OWNED (all eight below, and
+# none is consumed; a consumed member would declare itself).
 # ---------------------------------------------------------------------------
 
 contracts:

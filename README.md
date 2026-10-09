@@ -25,11 +25,13 @@ at `90111df262d6f54f7e82651d860adc12345f83f4`. openXwallet's
 byte. The procedure, with a rollback written before every phase, is
 [`docs/openwallet-cutover-runbook.md`](docs/openwallet-cutover-runbook.md).
 This root holds the scaffold, that runbook, `.specify/`, the agent instructions
-and the ten carved `openwallet_root` rows. Both pins and both gitlinks name the
-legs' carve merge commits (`spec` at `15c15bbd451a803f0acdb24e5234836db829a2d3`,
-`code` at `72313daab1f229c049cb90998931564c1904dbbc`), and the manifest's eight
-owned rows point at `code/contracts/…`. The first `wallet-v*` tag is still to
-come, and cutting it is the operator's act.
+and the ten carved `openwallet_root` rows. The first release, `wallet-v1.6`, is
+tagged on `b0af7c2ce53d63786a08a20aa3602a6f90345606` (opensoft/openWallet#7).
+At that commit both pins and both gitlinks name `spec` at
+`1924500354f472a6298c02db44a3ae2b21b8908e` (the archive merge of
+opensoft/openWallet-spec#4, after the spec leg's carve merge `15c15bbd`) and
+`code` at `72313daab1f229c049cb90998931564c1904dbbc` (the code leg's carve
+merge), and the manifest's eight owned rows point at `code/contracts/…`.
 
 ### What each repository owns after the split
 

@@ -21,7 +21,7 @@ leg_role: spec
 source_repository: opensoft/openWallet-spec
 submodule_path: spec
 
-commit: "1506bbdb4194a779bef63d8c4e5eecc7eac0bd68"
+commit: "1924500354f472a6298c02db44a3ae2b21b8908e"
 revision_kind: commit
 
 digest_algorithm: sha256
@@ -36,7 +36,7 @@ digest_algorithm: sha256
 # <oid>`, so a leg's own pin moving is drift too.
 digest_definition: sorted-ls-tree-r-v1
 digests:
-  tree_sha256: "b4da8e5c00ba41363b766f0c0ddfc6240a6b21545fbae521ed4149db077a0424"
+  tree_sha256: "37984e1d8b9af43c2393740dd774f568a9c3fd323c7fe6ec0e756e02d7232956"
 
 verify_pin: scripts/validate-pins.py
 resync_runbook: "README.md#the-lockstep-invariant"

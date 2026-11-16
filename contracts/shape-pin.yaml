@@ -27,13 +27,13 @@ pin_role: shape
 source_repository: opensoft/openRepoShape
 materialization: copied
 
-commit: "4f6821312a91f87e10ecfac4498aa48183a09ca2"
+commit: "0be1f3b8ff48b4c063a40b1adfc2859a8cb169a9"
 revision_kind: commit
 
 digest_algorithm: sha256
 digest_definition: sorted-ls-tree-r-v1
 digests:
-  tree_sha256: "fe6829919d3059cbb794e39943a8dbb1566083bf061f9b87a2e20421b9347553"
+  tree_sha256: "a2f3cfe9eee9329075cc1f1086007f420c12583e64e5bfb490f4ea969688a9d5"
 
 verify_pin: scripts/validate-pins.py
 

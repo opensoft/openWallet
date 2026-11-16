@@ -27,13 +27,13 @@ pin_role: shape
 source_repository: opensoft/openRepoShape
 materialization: copied
 
-commit: "f96955012ead9cf0048e9e63635d346bc1ba7b76"
+commit: "4f6821312a91f87e10ecfac4498aa48183a09ca2"
 revision_kind: commit
 
 digest_algorithm: sha256
 digest_definition: sorted-ls-tree-r-v1
 digests:
-  tree_sha256: "136757a86b941307458c7bf906e63428c0c03b472c2e8024f2781a01a49d2417"
+  tree_sha256: "fe6829919d3059cbb794e39943a8dbb1566083bf061f9b87a2e20421b9347553"
 
 verify_pin: scripts/validate-pins.py
 
@@ -43,7 +43,7 @@ files:
   - path: scripts/validate-pins.py
     sha256: "eb6e09367b6907f1272803e56bbd5e12d838138758d83697bd7b502b5d164503"
   - path: scripts/validate-manifest.py
-    sha256: "78d44ee205e197c8dc300f7049325034ec734fb004845c30b15cf64666d7ae5f"
+    sha256: "cd0176730cbb6dca5061d7ed6c7406cd071bf19a3a33142b4e5a947cb220d114"
   - path: scripts/bootstrap.py
     sha256: "a3a860ce7ce59633c74d2f3390f3bf678b37a7c72ed800059e144aea2fb7a5b1"
   - path: Makefile
@@ -59,6 +59,6 @@ files:
   - path: scripts/repo_shape.py
     sha256: "290d6856126193bd9e3617398b646489a78640494c9ef9631f3b79687c1fdb6d"
   - path: scripts/validate-repository-naming.py
-    sha256: "cc0af10dadaf3669c4e9188ee1130167023c978db3a7f57e0d89dd1a8c34e396"
+    sha256: "b53fc68868f1f0d77acdac0b744f604f2c7cfc72e5c48337626b52de9e20f79f"
   - path: contracts/repository-naming.yaml
     sha256: "c83075fd587c6b3ea3138b627a84dfeb6db472cbe2055ee7de1141ad91e607af"

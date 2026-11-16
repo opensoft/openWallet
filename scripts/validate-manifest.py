@@ -121,10 +121,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from repo_shape import (  # noqa: E402
     CHAIN_RECORD_FIELD, COMMIT_RE, PATH_NOT_CANONICAL, PROJECT_ID_RE,
     SHA256_RE, TREE_DIGEST_DEFINITION, VISIBILITY_CHOICES, NamingPolicy,
-    Refusal, accepts_role, cli_yaml_path, find_repo_root, link_pins_from_trees, load_yaml,
+    Refusal, accepts_role, find_repo_root, link_pins_from_trees, load_yaml,
     path_spelling_fault, pin_product_key, pin_source_env_collisions,
     pin_source_env_name, pin_source_env_shared, repo_basename,
 )
+
+# Copied CLI files also run beside older libraries. Prefer the shared guard;
+# the legacy branch needs only the standard library and the old Refusal API.
+try:
+    from repo_shape import cli_yaml_path
+except ImportError:
+    def cli_yaml_path(path: Path) -> Path:
+        resolved = Path(os.path.realpath(path))
+        if not resolved.is_relative_to(Path(os.path.realpath(os.getcwd()))):
+            raise Refusal("yaml-path-outside-cwd",
+                          f"{_shown(path)}: resolves outside the invocation directory",
+                          "Invoke from the project or encompassing workspace directory.")
+        return resolved
 
 #: BOTH END IN `\Z`, NEVER `$` (#1139): `$` also matches just before a
 #: trailing line feed, so an `elected_on:` or a leg's `repository:` read as

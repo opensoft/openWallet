@@ -37,3 +37,8 @@ inputs, and simplifies guards on the installed versions. Its
 [before and after file hashes](../../.specify/integrations/shell-detail-patches.json)
 identify the reviewed openBenches recipe and allow the installed bytes to be
 checked without replacing the hooks or changing the integration version.
+
+The CLI verifier source refresh is pinned by the published spec commit
+878293fb3ed84073dd7e285f56f4fee62413297e. The spec leg carries the updated verifier and its provenance
+assertions. The code leg, shape pin, pinned CLI package and released contract
+artifact digests stay at their existing values.

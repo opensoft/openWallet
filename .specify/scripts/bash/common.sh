@@ -106,15 +106,11 @@ read_feature_json_feature_directory() {
     # though it is valid (issue #3304).
     local _fd=''
     if command -v jq >/dev/null 2>&1; then
-        if ! _fd=$(jq -r '.feature_directory // empty' "$fj" 2>/dev/null); then
-            _fd=''
-        fi
+        _fd=$(jq -r '.feature_directory // empty' "$fj" 2>/dev/null) || _fd=''
     fi
     if [[ -z "$_fd" ]] && command -v python3 >/dev/null 2>&1; then
         # Use Python so pretty-printed/multi-line JSON still parses correctly.
-        if ! _fd=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); v=d.get('feature_directory'); print(v if v else '')" "$fj" 2>/dev/null); then
-            _fd=''
-        fi
+        _fd=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); v=d.get('feature_directory'); print(v if v else '')" "$fj" 2>/dev/null) || _fd=''
     fi
     if [[ -z "$_fd" ]]; then
         # Last-resort single-line grep/sed fallback. The `|| true` guards against
@@ -260,6 +256,7 @@ get_invoke_separator() {
             if jq_separator=$(jq -r '(.default_integration // .integration // "") as $k | if $k == "" then "." else (.integration_settings[$k].invoke_separator // ".") end' "$integration_json" 2>/dev/null); then
                 case "$jq_separator" in
                     "."|"-") separator="$jq_separator"; parsed=1 ;;
+                    *) : ;;
                 esac
             fi
         fi
@@ -287,6 +284,7 @@ PY
 ); then
                 case "$py_separator" in
                     "."|"-") separator="$py_separator"; parsed=1 ;;
+                    *) : ;;
                 esac
             fi
         fi
@@ -338,6 +336,7 @@ PY
             ' "$integration_json" 2>/dev/null)
             case "$awk_separator" in
                 "."|"-") separator="$awk_separator" ;;
+                *) : ;;
             esac
         fi
     fi
@@ -395,8 +394,14 @@ json_escape() {
     done
 }
 
-check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
-check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
+check_file() {
+    local _specify_check_target="$1"
+    [[ -f "$_specify_check_target" ]] && echo "  ✓ $2" || echo "  ✗ $2"
+}
+check_dir() {
+    local _specify_check_target="$1"
+    [[ -d "$_specify_check_target" && -n $(ls -A "$_specify_check_target" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"
+}
 
 # Resolve a template name to a file path using the priority stack:
 #   1. .specify/templates/overrides/
@@ -465,7 +470,7 @@ except Exception:
         for ext in "$ext_dir"/*/; do
             [[ -d "$ext" ]] || continue
             # Skip hidden directories (e.g. .backup, .cache)
-            case "$(basename "$ext")" in .*) continue;; esac
+            case "$(basename "$ext")" in .*) continue;; *) : ;; esac
             local candidate="$ext/templates/${template_name}.md"
             [[ -f "$candidate" ]] && echo "$candidate" && return 0
         done
@@ -495,12 +500,13 @@ resolve_template_content() {
     # Collect all layers (highest priority first)
     local -a layer_paths=()
     local -a layer_strategies=()
+    local -r _specify_template_replacement_strategy=replace
 
     # Priority 1: Project overrides (always "replace")
     local override="$base/overrides/${template_name}.md"
     if [[ -f "$override" ]]; then
         layer_paths+=("$override")
-        layer_strategies+=("replace")
+        layer_strategies+=("$_specify_template_replacement_strategy")
     fi
 
     # Priority 2: Installed presets (sorted by priority from .registry)
@@ -525,7 +531,7 @@ except Exception:
                     local yaml_warned=false
                     while IFS= read -r preset_id; do
                         # Read strategy and file path from preset manifest
-                        local strategy="replace"
+                        local strategy="$_specify_template_replacement_strategy"
                         local manifest_file=""
                         local manifest="$presets_dir/$preset_id/preset.yml"
                         if [[ -f "$manifest" ]] && command -v python3 >/dev/null 2>&1; then
@@ -569,6 +575,7 @@ except Exception:
                             # Reject absolute paths and parent traversal
                             case "$manifest_file" in
                                 /*|*../*|../*) manifest_file="" ;;
+                                *) : ;;
                             esac
                         fi
                         if [[ -n "$manifest_file" ]]; then
@@ -592,7 +599,7 @@ except Exception:
                     local candidate="$preset/templates/${template_name}.md"
                     if [[ -f "$candidate" ]]; then
                         layer_paths+=("$candidate")
-                        layer_strategies+=("replace")
+                        layer_strategies+=("$_specify_template_replacement_strategy")
                     fi
                 done
             fi
@@ -603,7 +610,7 @@ except Exception:
                 local candidate="$preset/templates/${template_name}.md"
                 if [[ -f "$candidate" ]]; then
                     layer_paths+=("$candidate")
-                    layer_strategies+=("replace")
+                    layer_strategies+=("$_specify_template_replacement_strategy")
                 fi
             done
         fi
@@ -614,11 +621,11 @@ except Exception:
     if [[ -d "$ext_dir" ]]; then
         for ext in "$ext_dir"/*/; do
             [[ -d "$ext" ]] || continue
-            case "$(basename "$ext")" in .*) continue;; esac
+            case "$(basename "$ext")" in .*) continue;; *) : ;; esac
             local candidate="$ext/templates/${template_name}.md"
             if [[ -f "$candidate" ]]; then
                 layer_paths+=("$candidate")
-                layer_strategies+=("replace")
+                layer_strategies+=("$_specify_template_replacement_strategy")
             fi
         done
     fi
@@ -627,7 +634,7 @@ except Exception:
     local core="$base/${template_name}.md"
     if [[ -f "$core" ]]; then
         layer_paths+=("$core")
-        layer_strategies+=("replace")
+        layer_strategies+=("$_specify_template_replacement_strategy")
     fi
 
     local count=${#layer_paths[@]}
@@ -636,12 +643,12 @@ except Exception:
     # Check if any layer uses a non-replace strategy
     local has_composition=false
     for s in "${layer_strategies[@]}"; do
-        test "$s" != "replace" && has_composition=true && break
+        test "$s" != "$_specify_template_replacement_strategy" && has_composition=true && break
     done
 
     # If the top (highest-priority) layer is replace, it wins entirely —
     # lower layers are irrelevant regardless of their strategies.
-    if test "${layer_strategies[0]}" = "replace"; then
+    if test "${layer_strategies[0]}" = "$_specify_template_replacement_strategy"; then
         cat "${layer_paths[0]}"
         return 0
     fi
@@ -656,7 +663,7 @@ except Exception:
     local base_idx=-1
     local i
     for (( i=0; i<count; i++ )); do
-        if test "${layer_strategies[$i]}" = "replace"; then
+        if test "${layer_strategies[$i]}" = "$_specify_template_replacement_strategy"; then
             base_idx=$i
             break
         fi

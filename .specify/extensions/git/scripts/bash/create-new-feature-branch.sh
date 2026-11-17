@@ -7,6 +7,8 @@
 
 set -e
 
+readonly SPECKIT_TRIM_TRAILING_DASH='s/-$//'
+
 JSON_MODE=false
 DRY_RUN=false
 ALLOW_EXISTING=false
@@ -152,7 +154,7 @@ _extract_highest_number() {
             && ! echo "$name" | grep -Eq '^[0-9]{8}-[0-9]{6}-' \
             && ! echo "$name" | grep -Eq '^[0-9]{7}-[0-9]{6}-' \
             && ! echo "$name" | grep -Eq '^[0-9]{7,8}-[0-9]{6}$'; then
-            number=$(echo "$name" | grep -Eo '^[0-9]{3,}-' | sed -E 's/-$//' || echo "0")
+            number=$(echo "$name" | grep -Eo '^[0-9]{3,}-' | sed -E "$SPECKIT_TRIM_TRAILING_DASH" || echo "0")
             number=$((10#$number))
             if test "$number" -gt "$highest"; then
                 highest=$number
@@ -208,7 +210,7 @@ check_existing_branches() {
 # Function to clean and format a branch name
 clean_branch_name() {
     local name="$1"
-    echo "$name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//'
+    echo "$name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed "$SPECKIT_TRIM_TRAILING_DASH"
 }
 
 # ---------------------------------------------------------------------------
@@ -384,6 +386,7 @@ validate_branch_template() {
             >&2 echo "Error: branch_template must not place {slug} before {number}; use {slug} only in the final feature segment."
             exit 1
             ;;
+        *) : ;;
     esac
     case "$feature_segment" in
         "{number}-"*) ;;
@@ -422,12 +425,12 @@ extract_feature_num_from_branch() {
     local match
     match=$(printf '%s\n' "$feature_segment" | grep -Eo '^[0-9]{8}-[0-9]{6}-' | head -n 1 || true)
     if [[ -n "$match" ]]; then
-        printf '%s\n' "$match" | sed -E 's/-$//'
+        printf '%s\n' "$match" | sed -E "$SPECKIT_TRIM_TRAILING_DASH"
         return
     fi
     match=$(printf '%s\n' "$feature_segment" | grep -Eo '^[0-9]+-' | head -n 1 || true)
     if [[ -n "$match" ]]; then
-        printf '%s\n' "$match" | sed -E 's/-$//'
+        printf '%s\n' "$match" | sed -E "$SPECKIT_TRIM_TRAILING_DASH"
         return
     fi
     printf '%s\n' "$branch_name"
@@ -475,7 +478,7 @@ generate_branch_name() {
         echo "$result"
     else
         local cleaned=$(clean_branch_name "$description")
-        echo "$cleaned" | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed 's/-$//'
+        echo "$cleaned" | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed "$SPECKIT_TRIM_TRAILING_DASH"
     fi
 }
 
@@ -525,7 +528,10 @@ fi
 
 # GitHub enforces a 244-byte limit on branch names
 MAX_BRANCH_LENGTH=244
-_byte_length() { printf '%s' "$1" | LC_ALL=C wc -c | tr -d ' '; }
+_byte_length() {
+    local byte_length_input="$1"
+    printf '%s' "$byte_length_input" | LC_ALL=C wc -c | tr -d ' '
+}
 BRANCH_BYTE_LEN=$(_byte_length "$BRANCH_NAME")
 if [[ -n "${GIT_BRANCH_NAME:-}" ]] && test "$BRANCH_BYTE_LEN" -gt $MAX_BRANCH_LENGTH; then
     >&2 echo "Error: GIT_BRANCH_NAME must be 244 bytes or fewer in UTF-8. Provided value is ${BRANCH_BYTE_LEN} bytes."

@@ -231,3 +231,5 @@ Everything under `scripts/`, plus `contracts/repository-naming.yaml` and
 `contracts/shape-pin.yaml`. Edit them upstream, not here — a local edit is
 reported as drift. `AGENTS.md` and `CLAUDE.md` have no row and are this
 project's own.
+
+Source-quality integration: [provider and installed-tooling evidence](docs/quality/provider-sync.md).

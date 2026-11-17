@@ -49,7 +49,7 @@
     {
       "path": ".specify/scripts/bash/common.sh",
       "beforeSha256": "e9e1c8c3dea6e2dac1ad9065705e0aff9e9cb775361a3e208f53e7d655d99228",
-      "afterSha256": "29b26ac293a734b688a633d1cdfa23154b9dbdd45b1559d7f73a9a054e6bf83f"
+      "afterSha256": "68ac9fa84a781886a95d0191d3047f33af6c01335204cb9e7ecbcb7f6eecd127"
     },
     {
       "path": ".specify/shell/select-worktree.sh",

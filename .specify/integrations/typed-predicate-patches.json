@@ -1,0 +1,74 @@
+{
+  "schema": "typed-predicate-local-patch-v1",
+  "recipeProvider": {
+    "repository": "opensoft/openBenches",
+    "commit": "79b8d3ab319459b3ce34175a7ceb39b3847504ff",
+    "tree": "4310a22fc1b0dae3b1e9edd5f465c218df0c8ebb",
+    "pullRequest": 331
+  },
+  "consumerBase": "3618980408eaaccaa31ec41da32f77cf86fb99f9",
+  "preservedIntegrationVersion": true,
+  "scope": "Typed predicates in installed variants using the published canonical recipe. Installed hook versions remain intact.",
+  "files": [
+    {
+      "path": ".specify/extensions/git/scripts/bash/auto-commit.sh",
+      "beforeSha256": "a3835b68e0dde393a5a2bc992d6d374d14166717ba7520fd8249a7d06c00d968",
+      "afterSha256": "3d02dce1a6c567f75c8c0275d676efd0d0b392dd062a7ab40cda483f31e551bc"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature-branch.sh",
+      "beforeSha256": "e2d6faddca2b4218ebf066074267d7b8e2b5e344cd0527272e5a04135380076e",
+      "afterSha256": "0fe18ab2c8ce4c707f28faf692b6cc454679a56c406c02051ffd0e4bd0ef5bec"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature.sh",
+      "beforeSha256": "92a9ac666d6f54fbf11ffeb370bf13d8033cfe8c5de950a4bc01731d8001fb84",
+      "afterSha256": "d5cb2a6bb3f670a41a5f414473031c8cd1a299bfd84b55d561ae9b146e17cc45"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/get-last-worktree.sh",
+      "beforeSha256": "7cc242c63c7611086ca258004ba3c3da64709912e6e7a6abc59720bfa074a023",
+      "afterSha256": "e5ee5fe63a24b207f75d6e5d7af99eb2a54c4060e7e15db76771db4e341e95ce"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/git-common.sh",
+      "beforeSha256": "fb908a0022715819db47a2a4fd85baf5146694c7a549d31b2179af2c807a6641",
+      "afterSha256": "f789b9a5b8f87d2474c76fba9060f3db9408fa5e06f66a706fde1c9424fabc58"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/initialize-repo.sh",
+      "beforeSha256": "6f02f50fd714e6fce68c07f84ffa05a3873b0bbdfdc8bdcdf64dafd592cf255d",
+      "afterSha256": "6d564cad27653c26b7feefb867410aa153ac8a7703fc1d75c83d7fcae7f88fd2"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/park.sh",
+      "beforeSha256": "6722bca4bcf9466a168e1351fd9b0a7d8a8fa433656c3b65cf3c9355dcfad7ca",
+      "afterSha256": "999e70b03a30e12d0dc8781ad0e8fa6b10c42a7814a74a41773e5525d4698434"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/resume.sh",
+      "beforeSha256": "23ad5852797fafc43773c5833c9b079fd88f2bfc7782878621a0e2a722686db3",
+      "afterSha256": "db3455258c572101015aa3e5a7b05b9106e05d00421d6520d786bd004a23c43a"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/workspace-common.sh",
+      "beforeSha256": "f39e1fa5478537d1afdf1e69e8ac73031888da0dc3299b56ecdd11f70c1c55a8",
+      "afterSha256": "f9cfe4617dcb2bb4ec0e480becf079ef7b0bc18d9586d59e5af1079136475456"
+    },
+    {
+      "path": ".specify/scripts/bash/common.sh",
+      "beforeSha256": "a4b42b1134a61b7f41ecfe539c4ae7e721dcbc06e6a322f8baad6e95d6cfd96b",
+      "afterSha256": "4a2daa49a68d61feaeea7191bea1e5d635739dd35408c9fc674acc206d70a97d"
+    },
+    {
+      "path": ".specify/scripts/bash/create-new-feature.sh",
+      "beforeSha256": "563ebfaa2b2cc8b5148630291c45b0e766204fb4e58ab1bc25f5fbbf75bee49e",
+      "afterSha256": "20c745f289e3d4d56bc19ee35f379b0f48d8f2e51efd962f5de287b3cd6b9275"
+    },
+    {
+      "path": ".specify/shell/select-worktree.sh",
+      "beforeSha256": "8645fe0856be20f60c01eeee02749fdba2857da10e584392badbf59b019df621",
+      "afterSha256": "d6c3aef8755f2198dc940d43d072dc1a90cfb938f0ce1672488915854c2a79a0"
+    }
+  ]
+}

@@ -21,7 +21,7 @@ leg_role: spec
 source_repository: opensoft/openWallet-spec
 submodule_path: spec
 
-commit: "1a81be6c108a42ac0ed5f793d5ea2247b8e375fd"
+commit: "0fe3151ccc2f3ffe7f72cca35106df46c180b5b7"
 revision_kind: commit
 
 digest_algorithm: sha256

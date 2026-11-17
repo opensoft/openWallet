@@ -1,0 +1,65 @@
+{
+  "schema": "shell-detail-patches-v1",
+  "recipeProvider": {
+    "repository": "opensoft/openBenches",
+    "commit": "f3306cb946ac394a8e3890cb78cc00cb0755b33c"
+  },
+  "preservedIntegrationVersion": "0.12.12.dev0",
+  "files": [
+    {
+      "path": ".specify/extensions/git/scripts/bash/auto-commit.sh",
+      "beforeSha256": "b9e053e4b1980f37e7bce4e6562bfcd5bcc9e8e11752651028f668d39b0dbd88",
+      "afterSha256": "a3835b68e0dde393a5a2bc992d6d374d14166717ba7520fd8249a7d06c00d968"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature-branch.sh",
+      "beforeSha256": "64073dae0db2fd9c1ae7f1e185ac2f1c78fad8bb55b4cb6c4436caf2f0589097",
+      "afterSha256": "e2d6faddca2b4218ebf066074267d7b8e2b5e344cd0527272e5a04135380076e"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature.sh",
+      "beforeSha256": "7999257a619b8b795fb0dde8b892f2dcfc7379e83bc6b3642567f058da38b7ba",
+      "afterSha256": "92a9ac666d6f54fbf11ffeb370bf13d8033cfe8c5de950a4bc01731d8001fb84"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/get-last-worktree.sh",
+      "beforeSha256": "1469f7c4956a74c161a64cee01ff91e51644c4cce28114a976ec4e38f6c017fa",
+      "afterSha256": "7cc242c63c7611086ca258004ba3c3da64709912e6e7a6abc59720bfa074a023"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/git-common.sh",
+      "beforeSha256": "982bdc8fe3da122c583f2b473694e3a5d0dc7121202e2b4575f15671d1dd4e79",
+      "afterSha256": "fb908a0022715819db47a2a4fd85baf5146694c7a549d31b2179af2c807a6641"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/park.sh",
+      "beforeSha256": "edfc2285cd34fe1b43d0fca76e7e219cc8ec3b8d81c9fc78f48edbbd691210d9",
+      "afterSha256": "6722bca4bcf9466a168e1351fd9b0a7d8a8fa433656c3b65cf3c9355dcfad7ca"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/resume.sh",
+      "beforeSha256": "dbe0191932ea20faff3ecda6dcbf24bb43eb3df1184eb7a38e0b5313874e6464",
+      "afterSha256": "23ad5852797fafc43773c5833c9b079fd88f2bfc7782878621a0e2a722686db3"
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/workspace-common.sh",
+      "beforeSha256": "4d0f01fb92c3895a39dbd8a73b2ee9013ba87e55f1dcd2332790044292896462",
+      "afterSha256": "f39e1fa5478537d1afdf1e69e8ac73031888da0dc3299b56ecdd11f70c1c55a8"
+    },
+    {
+      "path": ".specify/scripts/bash/common.sh",
+      "beforeSha256": "e9e1c8c3dea6e2dac1ad9065705e0aff9e9cb775361a3e208f53e7d655d99228",
+      "afterSha256": "29b26ac293a734b688a633d1cdfa23154b9dbdd45b1559d7f73a9a054e6bf83f"
+    },
+    {
+      "path": ".specify/shell/select-worktree.sh",
+      "beforeSha256": "231ebca5f64222b0602c811c960e3233022e125323b76d99a7006ddb4267963c",
+      "afterSha256": "8645fe0856be20f60c01eeee02749fdba2857da10e584392badbf59b019df621"
+    },
+    {
+      "path": ".specify/shell/worktrees.sh",
+      "beforeSha256": "9ac6ff859c9ed833624d7cf07c282e8a705354f649bfae1f3a505c2c03108618",
+      "afterSha256": "6e04ac227fc55d7ba1f4ad1fdd2e885f0f803ac7790125105475d15f53f1fca0"
+    }
+  ]
+}

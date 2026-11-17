@@ -31,3 +31,9 @@ exact-head review, unchanged assembly CI, and actual integrated wallet-main
 analysis. Candidate source changes do not establish finding closure on main.
 Active sessions and portable feature records are untouched. No check, baseline,
 coverage setting, runtime budget or billing change is authorized by this work.
+
+The follow-up shell patch records explicit case defaults, names positional
+inputs, and simplifies guards on the installed versions. Its
+[before and after file hashes](../../.specify/integrations/shell-detail-patches.json)
+identify the reviewed openBenches recipe and allow the installed bytes to be
+checked without replacing the hooks or changing the integration version.

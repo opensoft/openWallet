@@ -1,0 +1,120 @@
+{
+  "schema": "source-quality-local-patch-v1",
+  "upstreamRecipe": {
+    "repository": "opensoft/openBenches",
+    "commit": "e098b640233897c1d6ca071bb4ad7e476d618a9e",
+    "purpose": "Reviewed predicate spelling recipe; these installed legacy variants are not asserted byte-identical to current upstream scripts."
+  },
+  "preservedIntegrationVersion": true,
+  "behavior": "Strict numeric and case-sensitive comparisons retain test builtin semantics; only bounded quoted/literal unary operands use double brackets. No hook upgrade or active-session change.",
+  "files": [
+    {
+      "path": ".specify/extensions/git/scripts/bash/auto-commit.sh",
+      "beforeSha256": "81cf3e16db7128278fc991937c27c43337d08dde2db73f4b3c78206bde3e4b84",
+      "afterSha256": "b9e053e4b1980f37e7bce4e6562bfcd5bcc9e8e11752651028f668d39b0dbd88",
+      "count": 38,
+      "unaryDoubleBracket": 19,
+      "strictBuiltinTest": 19,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature-branch.sh",
+      "beforeSha256": "97cf69201a20bf2f5ad5daa455becb55be24d19753057ff74e49460864d62851",
+      "afterSha256": "64073dae0db2fd9c1ae7f1e185ac2f1c78fad8bb55b4cb6c4436caf2f0589097",
+      "count": 69,
+      "unaryDoubleBracket": 36,
+      "strictBuiltinTest": 33,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/create-new-feature.sh",
+      "beforeSha256": "8a4bc145a42c75e20752f25ae7be64008a85bf2aba59d3e171a36129b1b042f0",
+      "afterSha256": "7999257a619b8b795fb0dde8b892f2dcfc7379e83bc6b3642567f058da38b7ba",
+      "count": 130,
+      "unaryDoubleBracket": 46,
+      "strictBuiltinTest": 84,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/get-last-worktree.sh",
+      "beforeSha256": "7616952405b298446ec4ae498099f1a1440085c8db2abb701fec5a32a38e195a",
+      "afterSha256": "1469f7c4956a74c161a64cee01ff91e51644c4cce28114a976ec4e38f6c017fa",
+      "count": 48,
+      "unaryDoubleBracket": 25,
+      "strictBuiltinTest": 23,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/git-common.sh",
+      "beforeSha256": "81a1b2c9a5aff8139ff525b0ad8112e795acdf93b0ed589bda057b1d03ead93c",
+      "afterSha256": "982bdc8fe3da122c583f2b473694e3a5d0dc7121202e2b4575f15671d1dd4e79",
+      "count": 97,
+      "unaryDoubleBracket": 43,
+      "strictBuiltinTest": 54,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/initialize-repo.sh",
+      "beforeSha256": "ed99696e661e0250d4ee71fb970a35ef3ad47822df9c7ee55b81ba5e81145c1e",
+      "afterSha256": "6f02f50fd714e6fce68c07f84ffa05a3873b0bbdfdc8bdcdf64dafd592cf255d",
+      "count": 7,
+      "unaryDoubleBracket": 5,
+      "strictBuiltinTest": 2,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/park.sh",
+      "beforeSha256": "433a8f88058309eb9e7d5528fd1bd42d709313c2b27374015ad3b71a96305e0b",
+      "afterSha256": "edfc2285cd34fe1b43d0fca76e7e219cc8ec3b8d81c9fc78f48edbbd691210d9",
+      "count": 121,
+      "unaryDoubleBracket": 38,
+      "strictBuiltinTest": 83,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/resume.sh",
+      "beforeSha256": "bf178ffc7ffcfbf61a1a9853bef57750fc7b3d1e1c1f99dd0f2d473f90ad6480",
+      "afterSha256": "dbe0191932ea20faff3ecda6dcbf24bb43eb3df1184eb7a38e0b5313874e6464",
+      "count": 91,
+      "unaryDoubleBracket": 27,
+      "strictBuiltinTest": 64,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/extensions/git/scripts/bash/workspace-common.sh",
+      "beforeSha256": "5bb01ee867eaef3f63faa2c0181c1d25e088df1f66e217223a3156ac2109f756",
+      "afterSha256": "4d0f01fb92c3895a39dbd8a73b2ee9013ba87e55f1dcd2332790044292896462",
+      "count": 132,
+      "unaryDoubleBracket": 64,
+      "strictBuiltinTest": 68,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/scripts/bash/common.sh",
+      "beforeSha256": "6ff86bf39f6b4684b0f80927dc7a1dadec26b4671988a3fe4d6c2523cbd3aa22",
+      "afterSha256": "e9e1c8c3dea6e2dac1ad9065705e0aff9e9cb775361a3e208f53e7d655d99228",
+      "count": 44,
+      "unaryDoubleBracket": 34,
+      "strictBuiltinTest": 10,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/scripts/bash/create-new-feature.sh",
+      "beforeSha256": "dd531f9ba47c9ce9975b597947377be9542b7236681d6dc033513c4e3cfc50f2",
+      "afterSha256": "563ebfaa2b2cc8b5148630291c45b0e766204fb4e58ab1bc25f5fbbf75bee49e",
+      "count": 31,
+      "unaryDoubleBracket": 13,
+      "strictBuiltinTest": 18,
+      "inverseReconstruction": true
+    },
+    {
+      "path": ".specify/shell/select-worktree.sh",
+      "beforeSha256": "99719d0bff25726d91f39f93394a11e26458b3f83f85d95d6895aa4b46145d9f",
+      "afterSha256": "231ebca5f64222b0602c811c960e3233022e125323b76d99a7006ddb4267963c",
+      "count": 47,
+      "unaryDoubleBracket": 16,
+      "strictBuiltinTest": 31,
+      "inverseReconstruction": true
+    }
+  ]
+}

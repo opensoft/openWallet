@@ -1,0 +1,17 @@
+{
+  "schema": "selector-decimal-local-patch-v1",
+  "provider": {
+    "repository": "opensoft/openBenches",
+    "commit": "c627f57d59f952dbb59012fcf67cfe56a8df61dd",
+    "tree": "9df19d5971e0183f683ef6aadc13e0e9418d33f5",
+    "pullRequest": 332,
+    "path": "devBenches/base-image/files/speckit-worktree/templates/specify/shell/select-worktree.sh"
+  },
+  "consumerBase": "38f9d0cb6481b970384ac1227ae4d89152b173a9",
+  "scope": "Use the same validated decimal value for worktree selection and indexing.",
+  "file": {
+    "path": ".specify/shell/select-worktree.sh",
+    "beforeSha256": "d6c3aef8755f2198dc940d43d072dc1a90cfb938f0ce1672488915854c2a79a0",
+    "afterSha256": "83a2b86c7d69deb6963dd8841f409723a827642bbc20ff8ddaf62acbc50bbda5"
+  }
+}
